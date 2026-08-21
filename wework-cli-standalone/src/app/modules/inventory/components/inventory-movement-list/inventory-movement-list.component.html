@@ -1,0 +1,129 @@
+<div class="container">
+	<div class="modalHeader">
+		<div class="editRowModal">
+			<div class="modalHeader clearfix">
+				<div class="modal-about">
+					<div class="font-weight-bold p-t-5 font-17">
+						{{ dialogTitle }}</div>
+				</div>
+			</div>
+		</div>
+		<button mat-icon-button (click)="closeDialog()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<div mat-dialog-content>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="card">
+				<div class="header">
+					<h2>Historial de movimientos (<b>{{ product }}</b>) </h2>
+				</div>
+				<div class="tableBody">
+					<div class="table-responsive">
+						<!-- <table class="table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>N# (Guía o Receta)</th>
+                <th>Responsable</th>
+                <th>Destino</th>
+                <th>Movimiento</th>
+                <th>Cantidad</th>
+                <th>Existencia</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let movement of inventoryMovementList">
+                <td>{{ movement.date }}</td>
+                <td><strong>{{ movement.guideNumber }}</strong></td>
+                <td>{{ movement.responsibleUser }}</td>
+                <td>{{ movement.destination }}</td>
+                                    <td><span class="label shadow-style" [ngClass]="{
+                                        'l-bg-blue': movement.movementType === 'Retorno Stock',
+                                        'l-bg-green': movement.movementType === 'Ingreso Stock',
+                                        'l-bg-red': movement.movementType === 'Salida Stock',
+                                        'l-bg-purple': movement.movementType !== 'Ingreso Stock' && movement.movementType !== 'Salida Stock' && movement.movementType !== 'Retorno Stock'
+                                      }">{{ movement.movementType }}</span></td>
+                                    <td [ngStyle]="{
+                                        'color': movement.movementType === 'Retorno Stock'? '#0056b3' :
+                                                movement.movementType === 'Ingreso Stock'? '#28a745' :
+                                                movement.movementType === 'Salida Stock' ? '#dc3545' :
+                                                movement.movementType !== 'Ingreso Stock' && movement.movementType !== 'Salida Stock' && movement.movementType !== 'Retorno Stock'
+                                        }">{{ movement.quantityProductMoved }}<strong> Unid.</strong>
+                </td>
+                <td>{{ movement.stockAfterMovement}}<strong> Unid.</strong></td>
+                <td>
+                  <button [matTooltip]="movement.description" mat-stroked-button
+                  color="primary">Descripción</button>
+                </td>
+              </tr>
+            </tbody>
+          </table> -->
+						<table class="table mat-elevation-z8">
+							<thead>
+								<tr>
+									<th>Fecha</th>
+									<th>N# (Guía o Receta)</th>
+									<th>Responsable</th>
+									<th>Destino</th>
+									<th>Movimiento</th>
+									<th>Cantidad</th>
+									<th>Existencia</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								@for (movement of inventoryMovementList; track movement; let i = $index) {
+								<!-- Fila principal -->
+								<tr (click)="expandedElement = expandedElement === i ? null : i"
+									style="cursor: pointer;">
+									<td>{{ movement.date }}</td>
+									<td><strong>{{ movement.guideNumber }}</strong></td>
+									<td>{{ movement.responsibleUser }}</td>
+									<td>{{ movement.destination }}</td>
+									<td>
+										<span class="label shadow-style" [ngClass]="{
+                                                'l-bg-blue': movement.movementType === 'Retorno Stock',
+                                                'l-bg-green': movement.movementType === 'Ingreso Stock',
+                                                'l-bg-red': movement.movementType === 'Salida Stock',
+                                                'l-bg-purple': movement.movementType !== 'Ingreso Stock' && movement.movementType !== 'Salida Stock' && movement.movementType !== 'Retorno Stock'
+                                                }">{{ movement.movementType }}</span>
+									</td>
+									<td [ngStyle]="{'color': movement.movementType === 'Retorno Stock'? '#0056b3' :
+                                            movement.movementType === 'Ingreso Stock'? '#28a745' :
+                                            movement.movementType === 'Salida Stock' ? '#dc3545' :
+                                            movement.movementType !== 'Ingreso Stock' && movement.movementType !== 'Salida Stock' && movement.movementType !== 'Retorno Stock'
+                                            }">{{ movement.quantityProductMoved }} <strong>Unid.</strong>
+									</td>
+									<td>{{ movement.stockAfterMovement }} <strong>Unid.</strong></td>
+									<td>
+										<button mat-icon-button>
+											<mat-icon>{{ expandedElement === i ? 'expand_less' : 'expand_more'
+												}}</mat-icon>
+										</button>
+									</td>
+								</tr>
+								<!-- Fila expandible -->
+								@if (expandedElement === i) {
+								<tr>
+									<td colspan="8">
+										<mat-expansion-panel [expanded]="true">
+											<mat-expansion-panel-header>
+												<mat-panel-title><strong>Descripción del
+														movimiento</strong></mat-panel-title>
+											</mat-expansion-panel-header>
+											<p>{{ movement.description }}</p>
+										</mat-expansion-panel>
+									</td>
+								</tr>
+								}
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

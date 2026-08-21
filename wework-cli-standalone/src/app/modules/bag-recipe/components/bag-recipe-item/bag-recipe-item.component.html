@@ -1,0 +1,370 @@
+<div class="row">
+    
+    <!-- ========================================== -->
+    <!-- 1. BLOQUE DE ARRIBA: SELECCIÓN DE PRODUCTOS -->
+    <!-- ========================================== -->
+    <article class="col-12 mb-4">
+        <mat-card class="shadow-sm bg-light-subtle">
+            <mat-card-content class="p-3">
+                <div class="d-flex flex-column gap-2">
+                    <div>
+                        <strong class="text-base d-block">Seleccione los productos</strong>
+                        <span class="text-xs text-muted">Marca los productos que deseas configurar para esta receta</span>
+                    </div>
+
+                    <!-- Buscador integrado -->
+                   <!--  <mat-form-field appearance="outline" class="w-100 compact-field mt-1">
+                        <mat-label>Buscar producto por nombre o código...</mat-label>
+                        <input matInput placeholder="Ej. Aceite Vegetal">
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field> -->
+					
+                    <div class="product-selector-horizontal-container">
+                        <mat-selection-list (selectionChange)="onSelectionChange($event)" class="product-selection-grid">
+                            @for (product of productList; track product.id) {
+                            <mat-list-option 
+                                [value]="product" 
+                                [selected]="isProductSelected(product.id)"
+                                [disabled]="((product.stock?.quantity || 0) === 0)" 
+                                class="product-grid-option">
+                                
+                                <div class="product-option-body">
+                                    <span class="product-option-name" [title]="product.name">{{ product.name }}</span>
+                                    <small class="product-option-stock">
+                                        Disp: 
+                                        <span [ngStyle]="{ color: (product.stock?.quantity || 0) === 0 ? '#f44336' : '#3f51b5' }" class="fw-bold">
+                                            {{ product.stock?.quantity ?? 0 | number: '1.0-0' }}
+                                        </span> ud.
+                                    </small>
+                                </div>
+                            </mat-list-option>
+                            }
+                        </mat-selection-list>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </article>
+
+    <!-- ========================================== -->
+    <!-- 2. BLOQUE DE ABAJO: PRODUCTOS SELECCIONADOS -->
+    <!-- ========================================== -->
+    @if (internalFormArray.controls.length > 0) {
+    <article class="col-12 mb-3">
+        <mat-card class="shadow-sm">
+            <mat-card-title class="text-base px-3 pt-3 mb-0 d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-dark">Configuración de Productos Seleccionados</span>
+                <span class="badge bg-primary text-white fs-7 px-2 py-1 rounded-pill">
+                    {{ internalFormArray.controls.length }} Ítems agregados
+                </span>
+            </mat-card-title>
+            
+            <mat-card-content class="p-3">
+                <!-- Contenedor con scroll vertical para las tarjetas de configuración -->
+                <div class="selected-products-vertical-scroll">
+                    
+                    @for (control of internalFormArray.controls; track $index; let indexItem = $index) {
+                    <div class="product-config-box border rounded p-3 mb-3 shadow-sm bg-white" [formGroup]="asFormGroup(control)">
+                        
+                        <!-- Cabecera de la Fila del Producto -->
+                        <div class="row align-items-center mb-3 pb-2 border-bottom bg-light-subtle m-n3 p-3 rounded-top">
+                            <div class="col-md-8 col-12">
+                                <span class="fs-6 fw-bold text-primary">{{ indexItem + 1 }}. {{ asFormGroup(control).get('product')?.value?.name }}</span>
+                            </div>
+                            <div class="col-md-4 col-12 text-md-end text-start mt-1 mt-md-0 text-muted small">
+                                Existencia en Almacén: 
+                                <span class="fw-bold text-dark">
+                                    {{ asFormGroup(control).get('product')?.value?.stock?.quantity ?? 0 | number: '1.0-0' }}
+                                </span> uds.
+                            </div>
+                        </div>
+
+                        <!-- Formulario en 3 Columnas Anchas y Cómodas -->
+                        <div class="row g-3">
+                            
+                            <!-- Columna 1: Control de Cantidades -->
+                            <div class="col-lg-2 col-md-4 col-12 section-vertical-divider">
+                                <div class="small fw-bold text-uppercase text-secondary mb-2 d-flex align-items-center gap-1">
+                                    <mat-icon fontIcon="inventory" class="fs-6 w-auto h-auto text-muted"></mat-icon> Cantidades
+                                </div>
+                                <mat-form-field appearance="outline" class="w-100 compact-field mb-1">
+                                    <mat-label>Cantidad Rubro</mat-label>
+                                    <input matInput type="text" min="0" formControlName="quantity" appFormattedNumber />
+                                </mat-form-field>
+                                <div class="small text-muted mt-2">
+                                    Total Requerido: <span class="fw-bold text-dark">{{ asFormGroup(control).get('totalQuantityRequired')?.value | number: '1.0-0':'en-US' }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Columna 2: Gestión de Costos -->
+                            <div class="col-lg-4 col-md-4 col-12 section-vertical-divider">
+                                <div class="small fw-bold text-uppercase text-secondary mb-2 d-flex align-items-center gap-1">
+                                    <mat-icon fontIcon="account_balance_wallet" class="fs-6 w-auto h-auto text-muted"></mat-icon> Precio Costo
+                                </div>
+                                <div class="d-flex gap-2 mb-2">
+                                    <mat-form-field appearance="outline" class="w-50 compact-field">
+                                        <mat-label>Unitario $</mat-label>
+                                        <input matInput formControlName="costPrice" appCurrencyFormat />
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-50 compact-field">
+                                        <mat-label>Total $</mat-label>
+                                        <input matInput disabled [value]="asFormGroup(control).get('totalCostPrice')?.value | currency: 'USD':'symbol':'1.2-2':'en-US'" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="bg-light rounded p-2 small border-start border-success border-3">
+                                    <div class="d-flex justify-content-between text-muted mb-1">
+                                        <span>Costo Unitario:</span>
+                                        <span class="text-dark fw-medium">{{ asFormGroup(control).get('costPriceBs')?.value | currency:'VES':'Bs. ':'1.2-2':'es-VE' }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-success fw-bold">
+                                        <span>Total Costo Bs:</span>
+                                        <span>{{ asFormGroup(control).get('totalCostPriceBs')?.value | currency:'VES':'Bs. ':'1.2-2':'es-VE' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Columna 3: Gestión de Ventas y Fletes -->
+                            <div class="col-lg-5 col-md-4 col-12">
+                                <div class="small fw-bold text-uppercase text-secondary mb-2 d-flex align-items-center gap-1">
+                                    <mat-icon fontIcon="attach_money" class="fs-6 w-auto h-auto text-muted"></mat-icon> Precio Venta y Flete
+                                </div>
+                                <div class="d-flex gap-2 mb-2">
+                                    <mat-form-field appearance="outline" class="w-33 compact-field">
+                                        <mat-label>Venta $</mat-label>
+                                        <input matInput formControlName="salePrice" appCurrencyFormat />
+                                    </mat-form-field>
+									 <mat-form-field appearance="outline" class="w-33 compact-field">
+                                        <mat-label>Total Venta $</mat-label>
+                                        <input matInput disabled [value]="asFormGroup(control).get('totalSalePrice')?.value | currency: 'USD':'symbol':'1.2-2':'en-US'" />
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-33 compact-field">
+                                        <mat-label>Flete $</mat-label>
+                                        <input matInput formControlName="freightAmount" appCurrencyFormat />
+                                    </mat-form-field>   
+                                </div>
+                                <div class="bg-light rounded p-2 small border-start border-primary border-3 d-flex flex-column gap-1">
+                                    <div class="d-flex justify-content-between text-muted">
+                                        <span>Total Venta Bs:</span>
+                                        <span class="text-dark fw-medium">{{ asFormGroup(control).get('totalSalePriceBs')?.value | currency:'VES':'Bs. ':'1.2-2':'es-VE' }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-muted">
+                                        <span>Total Flete Bs:</span>
+                                        <span class="text-dark fw-medium">{{ asFormGroup(control).get('totalFreightAmountBs')?.value | currency:'VES':'Bs. ':'1.2-2':'es-VE' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    }
+
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </article>
+    }
+</div>
+
+@if (false) {
+<section class="row">
+	<!-- Columna izquierda: Productos para seleccionar -->
+	<article class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+		<mat-card class="product-select-card">
+			<mat-card-title class="text-sm font-semibold mb-1">
+				Seleccione los productos
+			</mat-card-title>
+			<mat-card-subtitle class="text-xs text-gray-500 mb-2">
+				Marca los productos que deseas configurar
+			</mat-card-subtitle>
+
+			<mat-card-content>
+				<div class="product-selection-container">
+					<mat-selection-list (selectionChange)="onSelectionChange($event)" class="product-selection-list">
+						@for (product of productList; track product.id) {
+						<mat-list-option [value]="product" [selected]="isProductSelected(product.id)"
+							[disabled]="((product.stock?.quantity || 0) === 0)" class="product-option">
+							<div class="product-option-content">
+								<div class="product-name">{{ product.name }}</div> Disponible:
+								<div class="product-stock"
+									[ngStyle]="{color: ((product.stock?.quantity || 0) === 0) ? '#f44336' : '#3f51b5'}">
+									{{ product.stock?.quantity ?? 0 | number: '1.0-0' }} unidades
+								</div>
+							</div>
+						</mat-list-option>
+						}
+					</mat-selection-list>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</article>
+
+	<!-- Columna derecha: Productos seleccionados para configurar -->
+	@if (internalFormArray.controls.length > 0) {
+	<article class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-3">
+		<mat-card>
+			<mat-card-title class="text-base mb-2">
+				Productos seleccionados
+			</mat-card-title>
+			<mat-card-content>
+				<div class="selected-products-container">
+					<mat-vertical-stepper [linear]="false" animationDuration="1000">
+						@for (control of internalFormArray.controls; track $index; let indexItem = $index) {
+						<mat-step [stepControl]="asFormGroup(control)">
+							<form [formGroup]="asFormGroup(control)">
+								<ng-template matStepLabel>
+									{{ asFormGroup(control).get('product')?.value?.name }} — Disponible
+									<span
+										[ngStyle]="{ color: (asFormGroup(control).get('product')?.value?.stock?.quantity ?? 0) === 0 ? '#f44336' : '#3f51b5' }">
+										{{ asFormGroup(control).get('product')?.value?.stock?.quantity ?? 0 | number:
+										'1.0-0' }}
+									</span> unidades
+								</ng-template>
+
+								<!-- Cantidades -->
+								<div class="step-section">
+									<mat-icon fontIcon="inventory" class="step-icon"></mat-icon>
+									<span class="step-title">CANTIDAD</span>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Cantidad Rubro</mat-label>
+											<input matInput type="text" min="0" formControlName="quantity"
+												appFormattedNumber />
+										</mat-form-field>
+									</div>
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Cantidad Requerida</mat-label>
+											<!-- Dejamos el input limpio de directivas de control ya que es puramente informativo -->
+											<input matInput type="text" min="0" disabled
+												[value]="asFormGroup(control).get('totalQuantityRequired')?.value | number: '1.0-0':'en-US'" />
+										</mat-form-field>
+									</div>
+								</div>
+								<mat-divider class="my-2"></mat-divider>
+
+								<!-- Precios Costo -->
+								<div class="step-section">
+									<mat-icon fontIcon="attach_money" class="step-icon"></mat-icon>
+									<span class="step-title">PRECIO COSTO</span>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Precio Unitario $</mat-label>
+											<input matInput formControlName="costPrice" appCurrencyFormat />
+										</mat-form-field>
+									</div>
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Total costo $</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('totalCostPrice')?.value | currency: 'USD':'symbol':'1.2-2':'en-US'" />
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Precio Unitario Bsf</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('costPriceBs')?.value | currency:'VES':'Bs.':'1.2-2':'es-VE'" />
+										</mat-form-field>
+									</div>
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Total costo BsF</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('totalCostPriceBs')?.value | currency:'VES':'Bs.':'1.2-2':'es-VE'" />
+										</mat-form-field>
+									</div>
+								</div>
+								<mat-divider class="my-2"></mat-divider>
+
+								<!-- Precios Venta -->
+								<div class="step-section">
+									<mat-icon fontIcon="attach_money" class="step-icon"></mat-icon>
+									<span class="step-title">PRECIO VENTA</span>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Precio Unitario $</mat-label>
+											<input matInput formControlName="salePrice" appCurrencyFormat />
+										</mat-form-field>
+									</div>
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Total venta $</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('totalSalePrice')?.value | currency: 'USD':'symbol':'1.2-2':'en-US'" />
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Precio Unitario Bsf</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('salePriceBs')?.value | currency:'VES':'Bs.':'1.2-2':'es-VE'" />
+										</mat-form-field>
+									</div>
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Total costo BsF</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('totalSalePriceBs')?.value | currency:'VES':'Bs.':'1.2-2':'es-VE'" />
+										</mat-form-field>
+									</div>
+								</div>
+								<mat-divider class="my-2"></mat-divider>
+
+								<!-- Flete -->
+								<div class="step-section">
+									<mat-icon fontIcon="commute" class="step-icon"></mat-icon>
+									<span class="step-title">FLETE Y TRANSPORTE</span>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Flete Unitario</mat-label>
+											<input matInput formControlName="freightAmount" appCurrencyFormat />
+										</mat-form-field>
+									</div>
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Flete Total</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('totalFreightAmount')?.value | currency: 'USD':'symbol':'1.2-2':'en-US'" />
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Flete Unitario Bsf</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('freightAmountBs')?.value | currency:'VES':'Bs.':'1.2-2':'es-VE'" />
+										</mat-form-field>
+									</div>
+									<div class="col-6">
+										<mat-form-field class="example-full-width mb-3" appearance="outline">
+											<mat-label>Flete Total Bsf</mat-label>
+											<input matInput disabled
+												[value]="asFormGroup(control).get('totalFreightAmountBs')?.value | currency:'VES':'Bs.':'1.2-2':'es-VE'" />
+										</mat-form-field>
+									</div>
+								</div>
+							</form>
+						</mat-step>
+						}
+					</mat-vertical-stepper>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</article>
+	}
+</section>
+ }
+

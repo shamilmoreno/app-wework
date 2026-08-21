@@ -1,0 +1,29 @@
+export class ProductDetailModel {
+	id?: number;
+	serialCode?: string;
+	productId?: number;
+	name?: string;
+	bagRecipeId?: number;
+	maquiladorBag?: number;
+	numberBags?: number;
+	operatingExpense?: number;
+	maquila?: number;
+	tax?: number;
+	commission?: number;
+	totalPriceCost?: number;
+	totalSalePrice?: number;
+	totalFreightForProduct?: number;
+	amountMaquiladorMajor?: number;
+	amountMaquiladorCooperator?: number;
+	amountDollarsMaquiladorMajor?: number;
+	amountDollarsMaquiladorCooperator?: number;
+	infoProductMaquiladorMajor?: any;
+	infoProductMaquiladorCooperator?: any;
+	monthRecipe?: string;
+	productForBag?: number;
+	bagAtCostPrice?: number;
+	bagAtSalesPrice?: number;
+	maquiladors?: any;
+	products?: any;
+	payments?: any;
+}

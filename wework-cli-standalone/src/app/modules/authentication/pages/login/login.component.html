@@ -1,0 +1,49 @@
+<div class="auth-container">
+	<div class="row auth-main">
+		<div class="col-sm-6 px-0 d-none d-sm-block">
+			<div class="left-img"
+				style="background-image: url('assets/images/pages/bg-01.jpg'); background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important;">
+			</div>
+		</div>
+		<div class="col-sm-6 auth-form-section">
+			<div class="form-section">
+				<div class="auth-wrapper">
+					<div class="text-center mb-2">
+						<img src="assets/images/logo-login.png" alt="Logo Alisys" class="img-fluid w-25 mb-1" />
+					</div>
+					<h2 class="welcome-msg"> ¡Introduzca sus credenciales para ingresar al sistema! </h2>
+					<p class="auth-signup-text text-muted">Necesito una cuenta?<a routerLink="/auth/signup"
+							class="sign-up-link">Registrarse</a></p>
+
+					<h2 class="login-title">ALISYS INTEGRADOS</h2>
+
+					<app-login-form (loginEvent)="authenticate($event)"></app-login-form>
+
+					<h6 class="social-login-title">OR</h6>
+					<ul class="list-unstyled social-icon mb-0 mt-3">
+						<li class="list-inline-item">
+							<a href="javascript:void(0)" class="rounded">
+								<i class="fab fa-google"></i>
+							</a>
+						</li>
+						<li class="list-inline-item">
+							<a href="javascript:void(0)" class="rounded flex-c-m">
+								<i class="fab fa-facebook-f"></i>
+							</a>
+						</li>
+						<li class="list-inline-item">
+							<a href="javascript:void(0)" class="rounded">
+								<i class="fab fa-twitter"></i>
+							</a>
+						</li>
+						<li class="list-inline-item">
+							<a href="javascript:void(0)" class="rounded">
+								<i class="fab fa-linkedin-in"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,173 @@
+<div class="container">
+	<div class="modalHeader">
+		<div class="editRowModal">
+			<div class="modalHeader clearfix">
+				<!-- <img [src]='shipment.img' alt="avatar"> -->
+				<div class="modal-about">
+					<div class="font-weight-bold p-t-5 font-17">
+						{{ dialogTitle }}</div>
+				</div>
+			</div>
+		</div>
+		<button mat-icon-button (click)="closeDialog()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<div mat-dialog-content>
+		<mat-horizontal-stepper [linear]="true" (selectionChange)="stepperSelectionChange($event)" #stepper>
+			<form [formGroup]="bagRecipeForm">
+				<mat-step [stepControl]="bagRecipeForm.get('generalInformationForm')!" [editable]="true">
+					<section formGroupName="generalInformationForm" class="pt-4">
+						<ng-template matStepLabel>Información General</ng-template>
+						<div class="row">
+							<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+								<mat-form-field class="w-100" appearance="outline">
+									<mat-label>Seleccionar Mes Receta</mat-label>
+									<input matInput [matDatepicker]="picker" formControlName="monthRecipeBag"
+										[max]="maxDate" placeholder="MM/YYYY" readonly>
+									<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+									<mat-datepicker #picker startView="multi-year"
+										(monthSelected)="setMonthAndYear($event, picker)"
+										panelClass="example-month-picker">
+									</mat-datepicker>
+									<mat-error
+										*ngIf="bagRecipeForm.get('generalInformationForm.monthRecipeBag')?.hasError('required')">
+										El año y mes son requeridos
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+								<mat-form-field class="example-full-width mb-3" appearance="outline">
+									<mat-label>Cantidad Total de Bolsas General</mat-label>
+									<input matInput formControlName="numberBags" name="numberBags" appFormattedNumber
+										(keyup)="onNumberBagsChange($event)" required
+										[value]="bagRecipeForm.get('generalInformationForm.numberBags')?.value">
+									<mat-error
+										*ngIf="bagRecipeForm.get('generalInformationForm.numberBags')?.hasError('required')">
+										El numero de bolsas es requerido
+									</mat-error>
+								</mat-form-field>
+							</div>
+						</div>
+						<div>
+							<button mat-stroked-button matStepperNext color="primary" (click)="validateSteps()"
+								[disabled]="!bagRecipeForm.get('generalInformationForm')?.valid">Siguiente</button>
+						</div>
+					</section>
+				</mat-step>
+				<mat-step [stepControl]="bagRecipeForm.get('maquiladorsForms')!" [editable]="isStep1Completed">
+					<section class="pt-4">
+						<ng-template matStepLabel>Maquiladores</ng-template>
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<!-- <app-bag-recipe-maquilador [maquiladorList]="maquiladorList" [companyList]="companyList"
+									[totalNumberBags]="totalNumberBags" [maquiladorsFormArray]="maquiladorsFormArray"
+									(maquiladorsCreated)="captureMaquiladorCreated($event)">
+								</app-bag-recipe-maquilador> -->
+								<app-bag-recipe-maquilador [maquiladorList]="maquiladorList" [companyList]="companyList"
+									[totalNumberBags]="totalNumberBags" formControlName="maquiladorsForms">
+								</app-bag-recipe-maquilador>
+							</div>
+						</div>
+						<div mat-dialog-actions class="mb-1">
+							<button mat-stroked-button matStepperPrevious color="accent" class="msr-2">Atrás</button>
+							<button mat-stroked-button matStepperNext color="primary" (click)="validateSteps()"
+								[disabled]="!bagRecipeForm.get('generalInformationForm')?.valid || maquiladorsFormArray.invalid">Siguiente</button>
+						</div>
+					</section>
+				</mat-step>
+				<mat-step [stepControl]="bagRecipeForm.get('generalDeductiblesForm')!" [editable]="isStep2Completed">
+					<section formGroupName="generalDeductiblesForm" (selectionChange)="stepperSelectionChange($event)"
+						class="pt-4">
+						<ng-template matStepLabel>Cargos Generales</ng-template>
+						<div class="row">
+							<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+								<mat-form-field class="example-full-width mb-3" appearance="outline">
+									<mat-label>Gasto Operativo</mat-label>
+									<input matInput name='operatingExpense' formControlName="operatingExpense"
+										appCurrencyFormat>
+									<mat-error
+										*ngIf="bagRecipeForm.get('generalDeductiblesForm.operatingExpense')?.hasError('required')">
+										El Gasto operativo es requerido
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+								<mat-form-field class="example-full-width mb-3" appearance="outline">
+									<mat-label>Maquila</mat-label>
+									<input matInput name='maquila' matInput formControlName="maquila" appCurrencyFormat>
+									<mat-error
+										*ngIf="bagRecipeForm.get('generalDeductiblesForm.maquila')?.hasError('required')">
+										El Campo Maquila es requerido
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+								<mat-form-field class="example-full-width mb-3" appearance="outline">
+									<mat-label>Impuesto</mat-label>
+									<input matInput name='tax' matInput formControlName="tax" appCurrencyFormat>
+									<mat-error
+										*ngIf="bagRecipeForm.get('generalDeductiblesForm.tax')?.hasError('required')">
+										El Campo Impuesto es requerido
+									</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+								<mat-form-field class="example-full-width mb-3" appearance="outline">
+									<mat-label>Comision</mat-label>
+									<input matInput name='commission' formControlName="commission" appCurrencyFormat>
+									<mat-error
+										*ngIf="bagRecipeForm.get('generalDeductiblesForm.commission')?.hasError('required')">
+										El Campo Comision es requerido
+									</mat-error>
+								</mat-form-field>
+							</div>
+						</div>
+						<div>
+							<button mat-stroked-button matStepperNext color="primary" (click)="validateSteps()"
+								[disabled]="!bagRecipeForm.get('generalDeductiblesForm')?.valid">Siguiente</button>
+						</div>
+					</section>
+				</mat-step>
+				<mat-step [editable]="isStep3Completed">
+					<section class="pt-4">
+						<ng-template matStepLabel>Productos</ng-template>
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<!-- <pre>¿Tiene lista global?: {{ productList | json }}</pre>
+							<pre>¿Tiene productos agregados?: {{ itemsList | json }}</pre> -->
+							<app-bag-recipe-item [productList]="productList" [itemsList]="itemsList"
+								[currentDollarRate]="currentDollarRate"
+								[numberCurrentBags]="bagRecipeForm.get('generalInformationForm.numberBags')?.value"
+								formControlName="itemsForms">
+							</app-bag-recipe-item>
+						</div>
+						<p>Ya has terminado.</p>
+						<div>
+							<button mat-stroked-button matStepperPrevious color="accent" class="msr-2">Atrás</button>
+							<!--<button mat-stroked-button color="primary" (click)="stepper.reset()">Reiniciar</button>-->
+							<button mat-stroked-button color="primary" type="submit" [disabled]="!bagRecipeForm.valid"
+								[mat-dialog-close]="1" (click)="saveChanges($event)">Guardar</button>
+							<button mat-stroked-button color="warn" tabindex="-1" mat-dialog-close>Cancel</button>
+						</div>
+					</section>
+				</mat-step>
+				<!-- <mat-step [editable]="isStep2Completed">
+					<section>
+						<ng-template matStepLabel>Relacion de Pagos</ng-template>
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<app-bag-recipe-payment [itemsPaymentslist]="paymentList"
+								(paymentsCreated)="capturePaymentCreated($event)"></app-bag-recipe-payment>
+						</div>
+						<p>Ya has terminado.</p>
+						<div mat-dialog-actions class="mb-1">
+							<button mat-stroked-button matStepperPrevious color="accent" class="msr-2">Atrás</button>
+							<button mat-stroked-button color="primary" type="submit" [disabled]="!bagRecipeForm.valid"
+								[mat-dialog-close]="1" (click)="saveChanges($event)">Guardar</button>
+							<button mat-stroked-button color="warn" tabindex="-1" mat-dialog-close>Cancel</button>
+						</div>
+					</section>
+				</mat-step> -->
+			</form>
+		</mat-horizontal-stepper>
+	</div>
+</div>

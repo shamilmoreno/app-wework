@@ -1,0 +1,99 @@
+<nav #navbar class="navbar active">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" onClick="return false;" class="navbar-toggle collapsed"
+                (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
+            <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event,'overlay-open')"></a>
+            <a class="navbar-brand" routerLink={{homePage}}>
+                <img src="assets/images/logo.png" alt="" />
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" [ngbCollapse]="isNavbarCollapsed">
+
+            <ul class="float-start collapse-menu-icon d-flex align-items-center"
+                style="list-style: none; margin: 0; padding: 0; height: 60px;">
+                <li class="d-flex align-items-center">
+                    <button mat-icon-button (click)="callSidemenuCollapse()" class="sidemenu-collapse">
+                        <i class="material-icons-outlined icon-color">menu</i>
+                    </button>
+                </li>
+
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item user_profile" ngbDropdown autoClose="outside">
+                    <div class="chip dropdown-toggle pointer" ngbDropdownToggle>
+                        <img src="{{userImg}}" class="user_img" width="32" height="32" alt="User">
+                        <span>{{ userName }}</span>
+                    </div>
+
+                    <div ngbDropdownMenu class="notification-dropdown pullDown">
+                        <div class="noti-list">
+                            <ul class="menu">
+                                <li class="body">
+                                    <ul class="user_dw_menu">
+                                        <li>
+                                            <a href="#" onClick="return false;">
+                                                <lucide-icon name="user" class="user-menu-icons"></lucide-icon>
+                                                Cuenta
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onClick="return false;">
+                                                <lucide-icon name="mail" class="user-menu-icons"></lucide-icon>
+                                                Bandeja de entrada
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onClick="return false;">
+                                                <lucide-icon name="settings" class="user-menu-icons"></lucide-icon>
+                                                Ajustes
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" (click)="logout()">
+                                                <lucide-icon name="log-out" class="user-menu-icons"></lucide-icon>
+                                                Cerrar Sesión
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item warehouse_profile" ngbDropdown autoClose="outside">
+                    <div class="chip dropdown-toggle pointer d-flex align-items-center gap-2" ngbDropdownToggle>
+                        <mat-icon class="material-icons-two-tone primary-icon">store</mat-icon>
+                        <span class="warehouse-name">{{ activeWarehouse?.name || 'Seleccionar Almacén' }}</span>
+                    </div>
+
+                    <div ngbDropdownMenu class="notification-dropdown pullDown warehouse-menu-panel">
+                        <div class="noti-list">
+                            <ul class="menu p-0 m-0 list-unstyled">
+                                <li class="body">
+                                    <ul class="warehouse_dw_menu list-unstyled mb-0">
+                                        <li *ngFor="let wh of userwarehouses">
+                                            <a href="#" (click)="setActiveWarehouse(wh); $event.preventDefault()">
+                                                <mat-icon color="primary">store</mat-icon> {{ wh.name }}
+                                                <span class="text-muted d-block" style="font-size: smaller;">{{
+                                                    wh.address }}</span>
+                                                <mat-icon *ngIf="activeWarehouse?.id === wh.id" color="primary"
+                                                    class="selected-check">
+                                                    check_circle
+                                                </mat-icon>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
