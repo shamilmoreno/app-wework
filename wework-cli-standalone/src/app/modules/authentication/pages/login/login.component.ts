@@ -39,7 +39,8 @@ export class LoginComponent implements OnInit {
   public authenticate(event: AuthenticationModel): void {
     this.authenticationService.login(event).subscribe({
       next: (rm: ResponseModel) => {
-        const userResponse = rm.response.user;
+        //const userResponse = rm.response.user;
+        const userResponse = rm.response;
         console.log('Usuario que se responde de el response', userResponse);
         console.log('Este es el Response completo', rm.response);
 
