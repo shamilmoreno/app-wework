@@ -62,7 +62,7 @@ export class AuthController {
 		try {
 			// Logout of user
 			const userService = new UserService();
-			const result = await userService.logout(req.headers.authorization);
+			const result = await userService.logout(req.headers.authorization || '');
 
 			// Validate result
 			if (result) {
