@@ -51,7 +51,8 @@ export class LoginComponent implements OnInit {
           lastName: userResponse.lastName,
           email: userResponse.email,
           token: userResponse.token,
-          userRoles: userResponse.userRoles,
+          //userRoles: userResponse.userRoles,
+          userRoles: userResponse.roles,
           warehouses:
             userResponse.userWarehouses?.map((w: any) => ({
               id: w.warehouse?.id,
