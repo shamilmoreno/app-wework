@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
       next: (rm: ResponseModel) => {
         const userResponse = rm.response.user;
         console.log('Usuario que se responde de el response', userResponse);
+        console.log('Este es el Response completo', rm.response);
 
         // Construimos el objeto de usuario mapeando los almacenes
         const userData: UserModel = {
