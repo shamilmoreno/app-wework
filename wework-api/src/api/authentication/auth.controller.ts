@@ -60,9 +60,17 @@ export class AuthController {
 	 */
 	public async ctrlLogout(req: Request, res: Response): Promise<void> {
 		try {
+			const token = req.headers.authorization;
+
+			// Si no viene la cabecera de autorización, respondemos 400 directamente
+			if (!token) {
+				HttpResponseService.response(res, 400, null, messages.auth.logoutError);
+				return;
+			}
+
 			// Logout of user
 			const userService = new UserService();
-			const result = await userService.logout(req.headers.authorization || '');
+			const result = await userService.logout(token);
 
 			// Validate result
 			if (result) {
@@ -164,32 +172,44 @@ export class AuthController {
 	 */
 	public async ctrlChangePassword(req: Request, res: Response): Promise<void> {
 		try {
+			const token = req.headers.authorization;
+			const { password } = req.body;
+
+			// 1. Validar presencia del token
+			if (!token) {
+				HttpResponseService.response(res, 401, null, messages.auth.invalidToken || 'Token no proporcionado');
+				return;
+			}
+
+			// 2. Validar presencia de la contraseña
+			if (!password) {
+				HttpResponseService.response(res, 400, null, messages.auth.invalidPassword);
+				return; // Importante detener la ejecución aquí
+			}
+
 			const userService = new UserService();
 			const jwtService = new JWTService();
 			const notificationMiddleware = new NotificationMiddleware();
 			const emailMiddleware = new EmailMiddleware();
 
-			// Check password are set
-			if (!req.body.password) {
-				HttpResponseService.response(res, 400, null, messages.auth.invalidPassword);
-			}
+			// 3. Cambiar contraseña
+			const result = await userService.changePassword(token, password);
 
-			// Change password
-			const result = await userService.changePassword(req.headers.authorization, req.body.password);
-
-			// Validate result
+			// 4. Validar resultado
 			if (result) {
-				// Create notification
+				// Crear notificación
 				notificationMiddleware.createChangePassword();
 
-				// Send email
-				const data = jwtService.decodeToken(req.headers.authorization);
-				emailMiddleware.sendChangePassword({
-					to: data.email,
-					data: { doctorName: data.firstName },
-				});
+				// Decodificar token e informar por email
+				const data = jwtService.decodeToken(token);
+				if (data?.email) {
+					emailMiddleware.sendChangePassword({
+						to: data.email,
+						data: { doctorName: data.firstName || '' },
+					});
+				}
 
-				// Response
+				// Respuesta exitosa
 				HttpResponseService.response(res, 200, null, messages.auth.changePasswordSuccess);
 			} else {
 				HttpResponseService.response(res, 400, null, messages.auth.changePasswordError);
