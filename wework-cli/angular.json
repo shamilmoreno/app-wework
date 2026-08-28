@@ -7,7 +7,7 @@
 	},
 	"newProjectRoot": "projects",
 	"projects": {
-		"wework-cli-standalone": {
+		"wework-cli": {
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:component": {
@@ -21,7 +21,7 @@
 				"build": {
 					"builder": "@angular/build:application",
 					"options": {
-						"outputPath": "dist/wework-cli-standalone",
+						"outputPath": "dist/wework-cli",
 						"index": "src/index.html",
 						"browser": "src/main.ts",
 						"tsConfig": "tsconfig.app.json",
@@ -77,10 +77,10 @@
 					"builder": "@angular/build:dev-server",
 					"configurations": {
 						"production": {
-							"buildTarget": "wework-cli-standalone:build:production"
+							"buildTarget": "wework-cli:build:production"
 						},
 						"development": {
-							"buildTarget": "wework-cli-standalone:build:development"
+							"buildTarget": "wework-cli:build:development"
 						}
 					},
 					"defaultConfiguration": "development"
