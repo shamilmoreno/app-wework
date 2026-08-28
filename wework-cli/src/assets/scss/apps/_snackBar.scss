@@ -1,0 +1,14 @@
+.snackbar-container {
+  margin-top: 70px !important;
+  color: beige;
+  &.error {
+    background-color: #c62828 !important;
+  }
+  &.success {
+    background-color: #2e7d32 !important;
+  }
+
+  &.warning {
+    background-color: #ff8f00 !important;
+  }
+}

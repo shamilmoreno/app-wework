@@ -1,0 +1,147 @@
+<!-- <div class="container">
+<div class="modalHeader">
+  <div class="editRowModal">
+    <div class="modalHeader clearfix">
+      <div class="modal-about">
+        <div class="font-weight-bold p-t-5 font-17">
+        {{ dialogTitle }}</div>
+      </div>
+    </div>
+  </div>
+  <button mat-icon-button (click)="closeDialog()" aria-label="Close dialog">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <form [formGroup]="inventoryForm">
+    <section>
+      <ng-template matStepLabel>Ingreso de inventario</ng-template>
+      <div class="row">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Fecha</mat-label>
+            <input matInput formControlName="date" [min]="minDate" [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="f['date'].errors && f['date'].dirty" class="caption text-danger">
+              <label *ngIf="f['date'].errors['date']">El campo es requerido</label>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Numero de Guía</mat-label>
+            <input matInput formControlName="guideNumber" required>
+            <mat-error *ngIf="f['guideNumber'].errors && f['guideNumber'].dirty"
+              class="caption text-danger">
+              <label *ngIf="f['guideNumber'].errors['required']">El campo es requerido</label>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Cantidad</mat-label>
+            <input matInput formControlName="quantity" min="0" required matInput min="0" name='quantity'
+              placeholder="Cantidad" appFormattedNumber>
+              <mat-error *ngIf="f['quantity'].errors && f['quantity'].dirty" class="caption text-danger">
+                <label *ngIf="f['quantity'].errors['quantity']">El campo es requerido</label>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Destino</mat-label>
+              <input matInput type="text" min="0" formControlName="destination" required>
+              <mat-error *ngIf="f['destination'].errors && f['destination'].dirty" class="caption text-danger">
+                <label *ngIf="f['destination'].errors['destination']">El campo es requerido</label>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div mat-dialog-actions class="mb-1" align="end">
+            <button mat-stroked-button color="primary" type="submit" [disabled]="!inventoryForm.valid"
+            [mat-dialog-close]="1" (click)="saveChanges($event)">Guardar</button>
+            <button mat-stroked-button color="warn" tabindex="-1" mat-dialog-close>Cancel</button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+</div> -->
+<div class="container">
+	<div class="modalHeader">
+		<div class="editRowModal">
+			<div class="modalHeader clearfix">
+				<div class="modal-about">
+					<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+					<span>{{ data.productName }}</span>
+				</div>
+			</div>
+		</div>
+		<button mat-icon-button (click)="closeDialog()" aria-label="Close dialog">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<div mat-dialog-content>
+		<form [formGroup]="inventoryForm" (ngSubmit)="saveChanges($event)" class="p-4">
+
+			<mat-form-field appearance="fill" class="w-100 mb-3">
+				<mat-label>Número de guía</mat-label>
+				<input matInput formControlName="guideNumber" />
+				@if (f['guideNumber'].invalid && f['guideNumber'].touched) {
+				<mat-error>
+					Este campo es obligatorio
+				</mat-error>
+				}
+			</mat-form-field>
+
+			<mat-form-field appearance="fill" class="w-100 mb-4">
+				<mat-label>Fecha</mat-label>
+				<input matInput [matDatepicker]="picker" formControlName="date" />
+				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-datepicker #picker></mat-datepicker>
+				@if (f['date'].invalid && f['date'].touched) {
+				<mat-error>
+					Este campo es obligatorio
+				</mat-error>
+				}
+			</mat-form-field>
+
+			<div formArrayName="entries">
+				@for (entry of entries.controls; track entry; let i = $index) {
+				<div [formGroupName]="i" class="entry-item mb-4 border p-3 rounded">
+					<div class="flex gap-3 flex-wrap items-end">
+						<mat-form-field class="example-full-width" appearance="outline">
+							<mat-label>Cantidad</mat-label>
+							<input matInput formControlName="quantity" min="0" required matInput min="0" name='quantity'
+								placeholder="Cantidad" appFormattedNumber>
+							@if (entry.get('quantity')?.invalid && entry.get('quantity')?.touched) {
+							<mat-error class="caption text-danger">
+								@if (entry.get('quantity')?.invalid) {
+								<label>El campo es requerido</label>
+								}
+							</mat-error>
+							}
+						</mat-form-field>
+						<mat-form-field class="example-full-width" appearance="outline">
+							<mat-label>Destino</mat-label>
+							<input matInput type="text" min="0" formControlName="destination" required>
+							@if (entry.get('destination')?.invalid && entry.get('destination')?.touched) {
+							<mat-error class="caption text-danger">
+								@if (entry.get('destination')?.invalid) {
+								<label>El campo es requerido</label>
+								}
+							</mat-error>
+							}
+						</mat-form-field>
+					</div>
+				</div>
+				}
+			</div>
+
+			<div class="mt-4 text-end">
+				<button mat-button type="button" (click)="closeDialog()">Cancelar</button>
+				<button mat-raised-button color="primary" type="submit" [mat-dialog-close]="1">Guardar</button>
+			</div>
+		</form>
+	</div>
+</div>
