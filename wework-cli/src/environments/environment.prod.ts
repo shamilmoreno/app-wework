@@ -1,11 +1,8 @@
 export const environment = {
-  production: true,
-  server: 'http://apigestion.weworkintegrados.com:3000',  
-  serverPath: 'http://apigestion.weworkintegrados.com:3000',  
-  apiUrl: 'http://gestion.weworkintegrados.com',
- /*  server: 'http://localhost:3000',
-  serverPath: 'http://localhost:3000',
-  apiUrl: 'http://localhost:4200', */
-  tokenTag: 'admin-token',
-  logoPath: ''
+	production: true,
+	server: 'https://wework-api.onrender.com',
+	serverPath: 'https://wework-api.onrender.com',
+	apiUrl: 'https://wework-api.onrender.com',
+	tokenTag: 'admin-token',
+	logoPath: ''
 };
