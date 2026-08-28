@@ -1,6 +1,6 @@
 import { Trim } from 'class-sanitizer';
 import { MaxLength, MinLength } from 'class-validator';
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user';
 import { Permission } from './permission';
 import { UserRole } from './user.role';
@@ -20,10 +20,8 @@ export class Role {
   public createdAt: string;
 
   // RELATIONS
-  @ManyToMany(
-    () => UserRole,
-    (userRole: UserRole) => userRole.role)
-  public userRoles: UserRole[];
+  @OneToMany(() => UserRole, userRole => userRole.role)
+  userRoles: UserRole[];
 
   @ManyToMany(
     () => Permission,

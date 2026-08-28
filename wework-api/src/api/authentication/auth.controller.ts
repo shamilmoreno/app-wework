@@ -1,13 +1,13 @@
-import { Request, Response } from 'express';
-import messages from '../../core/helpers/messages';
-import { checkEnvironment } from '../../core/middlewares/check-environment';
-import { HttpResponseService } from '../../core/services/http-response.service';
-import { JWTService } from '../../core/services/jwt.service';
-import { UserService } from '../../core/services/user.service';
-import { IEnvironment } from '../../core/interfaces/ienvironment';
-import { EmailMiddleware } from '../../core/middlewares/email.middleware';
-import { NotificationMiddleware } from '../../core/middlewares/notification.middleware';
-import { User } from '../../database/entities/user';
+import { Request, Response } from "express";
+import messages from "../../core/helpers/messages";
+import { checkEnvironment } from "../../core/middlewares/check-environment";
+import { HttpResponseService } from "../../core/services/http-response.service";
+import { JWTService } from "../../core/services/jwt.service";
+import { UserService } from "../../core/services/user.service";
+import { IEnvironment } from "../../core/interfaces/ienvironment";
+import { EmailMiddleware } from "../../core/middlewares/email.middleware";
+import { NotificationMiddleware } from "../../core/middlewares/notification.middleware";
+import { User } from "../../database/entities/user";
 
 export class AuthController {
 	/**
@@ -20,38 +20,43 @@ export class AuthController {
 			const userService = new UserService();
 			const jwtService = new JWTService();
 
-			// Check if username and password are set
 			if (!req.body.email.toLowerCase() || !req.body.password) {
 				return HttpResponseService.response(res, 401, null, messages.auth.invalidData);
 			}
 
-			// Get user from database
-			const user: User = await userService.verifyEmail(req.body.email.toLowerCase());
+			const user: User | null = await userService.verifyEmail(req.body.email.toLowerCase());
 
 			if (!user) {
 				return HttpResponseService.response(res, 401, null, messages.auth.invalidInfo);
 			}
 
-			// Check if encrypted password matches
 			if (!user.checkIfUnencryptedPasswordIsValid(req.body.password)) {
 				return HttpResponseService.response(res, 401, null, messages.auth.invalidInfo);
 			}
 
-			// Generate and save token in database
-			user.token = jwtService.generateToken(user);
+			const tokens = await jwtService.generateTokens(user);
+
+			// ASIGNACIÓN DEL TOKEN
+			user.token = tokens.accessToken;
+
+			// GUARDADO EN BD
 			const userWithToken = await userService.saveUser(user);
 
-			// Send the JWT in the response
-			if (userWithToken.token) {
-				return HttpResponseService.response(res, 200, userWithToken, `Bienvenid@,\n${userWithToken.firstName} ${userWithToken.lastName}`);
-			} else {
-				return HttpResponseService.response(res, 400, null, messages.auth.failToCreateToken);
-			}
+			// LIMPIEZA DE CONTRASEÑA (Desestructuración)
+			// Extraemos 'password' y guardamos todo lo demás en 'userData'
+			const { password, ...userData } = userWithToken;
+
+			// RESPUESTA AL FRONTEND
+			return HttpResponseService.response(res, 200, {
+				accessToken: tokens.accessToken,
+				refreshToken: tokens.refreshToken,
+				user: userData
+			}, `Bienvenid@ ${userData.firstName}`);
+
 		} catch (error) {
 			return HttpResponseService.response(res, 500, error, messages.general.error);
 		}
 	}
-
 
 	/**
 	 * Cerrar sesión del usuario
@@ -60,16 +65,10 @@ export class AuthController {
 	 */
 	public async ctrlLogout(req: Request, res: Response): Promise<void> {
 		try {
-			const token = req.headers.authorization;
-
-			// Si no viene la cabecera de autorización, respondemos 400 directamente
-			if (!token) {
-				HttpResponseService.response(res, 400, null, messages.auth.logoutError);
-				return;
-			}
-
 			// Logout of user
 			const userService = new UserService();
+			const authHeader = req.headers.authorization || '';
+			const token = authHeader.split(' ')[1] || authHeader; 
 			const result = await userService.logout(token);
 
 			// Validate result
@@ -88,7 +87,10 @@ export class AuthController {
 	 * @param req Solicitud
 	 * @param res Respuesta
 	 */
-	public async ctrlRequestChangePassword(req: Request, res: Response): Promise<void> {
+	public async ctrlRequestChangePassword(
+		req: Request,
+		res: Response,
+	): Promise<void> {
 		try {
 			const userService = new UserService();
 			const jwtService = new JWTService();
@@ -101,9 +103,9 @@ export class AuthController {
 			}
 
 			// Get user from database
-			const user: User = await userService.verifyEmail(req.body.email);
+			const user: User | null = await userService.verifyEmail(req.body.email);
 			if (!user) {
-				HttpResponseService.response(res, 200, null, messages.auth.infoToRequestChangePassword);
+				return HttpResponseService.response(res, 200, null, messages.auth.infoToRequestChangePassword);
 			}
 
 			// Generate and save token on database
@@ -138,6 +140,34 @@ export class AuthController {
 	}
 
 	/**
+	 * Refrescar el token de acceso usando el Refresh Token
+	 * @param req Solicitud (body: { refreshToken: string })
+	 * @param res Respuesta
+	 */
+	public async ctrlRefreshToken(req: Request, res: Response): Promise<void> {
+		try {
+			const { refreshToken } = req.body;
+			const userService = new UserService();
+
+			if (!refreshToken) {
+				return HttpResponseService.response(res, 400, null, "El refresh token es requerido");
+			}
+
+			// Validamos el refresh token en la base de datos
+			const newAccessToken = await userService.refreshUserToken(refreshToken);
+
+			if (newAccessToken) {
+				HttpResponseService.response(res, 200, { accessToken: newAccessToken }, "Token renovado");
+			} else {
+				// Si no es válido o expiró en DB, obligamos a re-login
+				HttpResponseService.response(res, 401, null, "Sesión de standby expirada");
+			}
+		} catch (error) {
+			HttpResponseService.response(res, 500, error, "Error al renovar sesión");
+		}
+	}
+
+	/**
 	 * Validar token del usuario
 	 * @param req Solicitud
 	 * @param res Respuesta
@@ -152,7 +182,7 @@ export class AuthController {
 			}
 
 			// Validate token
-			const result: User = await userService.validateToken(req.params.token);
+			const result: User | null = await userService.validateToken(req.params.token);
 
 			// Validate result
 			if (result) {
@@ -172,44 +202,32 @@ export class AuthController {
 	 */
 	public async ctrlChangePassword(req: Request, res: Response): Promise<void> {
 		try {
-			const token = req.headers.authorization;
-			const { password } = req.body;
-
-			// 1. Validar presencia del token
-			if (!token) {
-				HttpResponseService.response(res, 401, null, messages.auth.invalidToken || 'Token no proporcionado');
-				return;
-			}
-
-			// 2. Validar presencia de la contraseña
-			if (!password) {
-				HttpResponseService.response(res, 400, null, messages.auth.invalidPassword);
-				return; // Importante detener la ejecución aquí
-			}
-
 			const userService = new UserService();
 			const jwtService = new JWTService();
 			const notificationMiddleware = new NotificationMiddleware();
 			const emailMiddleware = new EmailMiddleware();
 
-			// 3. Cambiar contraseña
-			const result = await userService.changePassword(token, password);
+			// Check password are set
+			if (!req.body.password) {
+				HttpResponseService.response(res, 400, null, messages.auth.invalidPassword);
+			}
 
-			// 4. Validar resultado
+			// Change password
+			const result = await userService.changePassword(req.headers.authorization || '', req.body.password);
+
+			// Validate result
 			if (result) {
-				// Crear notificación
+				// Create notification
 				notificationMiddleware.createChangePassword();
 
-				// Decodificar token e informar por email
-				const data = jwtService.decodeToken(token);
-				if (data?.email) {
-					emailMiddleware.sendChangePassword({
-						to: data.email,
-						data: { doctorName: data.firstName || '' },
-					});
-				}
+				// Send email
+				const data = jwtService.decodeToken(req.headers.authorization || '');
+				emailMiddleware.sendChangePassword({
+					to: data.email,
+					data: { doctorName: data.firstName },
+				});
 
-				// Respuesta exitosa
+				// Response
 				HttpResponseService.response(res, 200, null, messages.auth.changePasswordSuccess);
 			} else {
 				HttpResponseService.response(res, 400, null, messages.auth.changePasswordError);

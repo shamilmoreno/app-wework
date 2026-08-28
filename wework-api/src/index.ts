@@ -3,11 +3,12 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import 'reflect-metadata';
-import { DataSource, createConnection, ConnectionOptions } from 'typeorm';
+import { createConnection } from 'typeorm';
 import path from 'path';
 
 // Configs
 import corsOptions from './core/helpers/cors-options';
+import startCronJobs from './core/cron/saveBcvRateCron';
 import { checkEnvironment } from './core/middlewares/check-environment';
 
 // Routes
@@ -18,6 +19,8 @@ import { SubcategoryRoutes } from './api/subcategory/subcategory.routes';
 import { UserRoutes } from './api/user/user.routes';
 import { CustomerRoutes } from './api/customer/customer.routes';
 import { CompanyRoutes } from './api/company/company.routes';
+import { ExchangeRateRoutes } from './api/exhange-rate/exchange-rate.routes';
+import { WareHouseRoutes } from './api/warehouse/warehouse.routes'
 import { ProviderRoutes } from './api/provider/provider.routes';
 import { ShipmentDataRoutes } from './api/shipment/shipment.routes';
 import { SummaryShipmentRoutes } from './api/summary-shipment/summary-shipment.routes';
@@ -64,21 +67,6 @@ class Server {
 		this.app.use(express.static(path.join(__dirname, '..', 'public'))); // Public folders
 	}
 
-/* 	public routes(): void {
-		this.app.use('/', cors(corsOptions), new IndexRoutes().router);
-		this.app.use('/auth', cors(corsOptions), new AuthRoutes().router);
-		this.app.use('/user', cors(corsOptions), new UserRoutes().router);
-		this.app.use('/customer', cors(corsOptions), new CustomerRoutes().router);
-		this.app.use('/provider', cors(corsOptions), new ProviderRoutes().router);
-		this.app.use('/category', cors(corsOptions), new CategoryRoutes().router);
-		this.app.use('/subcategory', cors(corsOptions), new SubcategoryRoutes().router)
-		this.app.use('/shipment', cors(corsOptions), new ShipmentDataRoutes().router)
-		this.app.use('/summary-shipment', cors(corsOptions), new SummaryShipmentRoutes().router)
-		this.app.use('/bag-recipe', cors(corsOptions), new BagRecipeDataRoutes().router)
-		this.app.use('/inventory', cors(corsOptions), new InventoryRoutes().router)
-		this.app.use('/product', cors(corsOptions), new ProductRoutes().router)
-	} */
-
 	public routes(): void {
 		this.app.use('/', new IndexRoutes().router);
 		this.app.use('/auth', new AuthRoutes().router);
@@ -86,6 +74,8 @@ class Server {
 		this.app.use('/role', new RoleRoutes().router);
 		this.app.use('/customer', new CustomerRoutes().router);
 		this.app.use('/company', new CompanyRoutes().router);
+		this.app.use('/exchangeRate', new ExchangeRateRoutes().router);
+		this.app.use('/warehouse', new WareHouseRoutes().router);
 		this.app.use('/provider', new ProviderRoutes().router);
 		this.app.use('/category', new CategoryRoutes().router);
 		this.app.use('/subcategory', new SubcategoryRoutes().router);
@@ -111,13 +101,17 @@ class Server {
 				},
 				entities: [path.join(__dirname, 'database', 'entities', '*.js')],
 				migrations: [path.join(__dirname, 'database', 'migrations', '*.js')],
-				subscribers: [path.join(__dirname, 'database', 'subscribers', '*.js')], 
-				
+				subscribers: [path.join(__dirname, 'database', 'subscribers', '*.js')],
+
 				// Otras configuraciones según sea necesario
 			});
-	
+
 			console.log('Database connection established');
-	
+
+			// 🔹 Arranca los cron jobs después de inicializar DB
+			startCronJobs();
+			console.log('⏰ Cron jobs started');
+
 			// Ahora que la conexión está establecida, puedes ejecutar consultas u otras operaciones aquí
 			// Por ejemplo:
 			// const result = await connection.getRepository(Sample).findOne(query);

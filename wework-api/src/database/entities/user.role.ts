@@ -8,15 +8,9 @@ export class UserRole {
   public id: number;
 
   // Relations
-  @ManyToOne(
-    () => User,
-    (user: User) => user.roles,
-    { onDelete: 'CASCADE' })
-  public user: User;
+  @ManyToOne(() => User, user => user.userRoles, { onDelete: 'CASCADE' })
+  user: User;
 
-  @ManyToOne(
-    () => Role,
-    (role: Role) => role.userRoles,
-    { onDelete: 'SET NULL' })
-  public role: Role;
+  @ManyToOne(() => Role, role => role.userRoles, { onDelete: 'SET NULL' })
+  role: Role;
 }

@@ -1,7 +1,7 @@
 import { sanitize } from 'class-sanitizer';
 import { Request, Response } from 'express';
 import messages from '../../core/helpers/messages';
-import { Inventory } from '../../database/entities/inventory';
+import { InventoryStock } from '../../database/entities/inventory-stock ';
 import { InventoryMovement } from '../../database/entities/inventory-movement';
 import { InventoryMovementService } from '../../core/services/inventory-movement.service';
 import { NotificationMiddleware } from '../../core/middlewares/notification.middleware';
@@ -74,7 +74,7 @@ export class InventoryMovementController {
 			inventoryMovement.destination = req.body.destination,
 			inventoryMovement.description = req.body.description,
 			inventoryMovement.responsibleUser = req.body.responsibleUser,
-			inventoryMovement.stockAfterMovement = currentInventoryStock.quantityProductStock + Number((/,/.test(req.body.quantityProductMoved)) ? req.body.quantityProductMoved.replace(/,/g, '') : req.body.quantityProductMoved),
+			inventoryMovement.stockAfterMovement = currentInventoryStock.quantity + Number((/,/.test(req.body.quantityProductMoved)) ? req.body.quantityProductMoved.replace(/,/g, '') : req.body.quantityProductMoved),
 			inventoryMovement.movementType = req.body.movementType,
 			inventoryMovement.referenceId = req.body.referenceId,
 			inventoryMovement.referenceType = req.body.referenceType,
@@ -96,7 +96,7 @@ export class InventoryMovementController {
 			let quantity: any = inventoryMovement.quantityProductMoved
 
 			if (inventoryStock) {
-				inventoryStock.quantityProductStock += (/,/.test(quantity)) ? Number(quantity.replace(/,/g, '')) : Number(quantity) ;
+				inventoryStock.quantity += (/,/.test(quantity)) ? Number(quantity.replace(/,/g, '')) : Number(quantity) ;
 			}
 			
 			await inventoryStockServices.saveChanges(inventoryStock);
@@ -130,17 +130,16 @@ export class InventoryMovementController {
 				// Crear movimiento
 				const movement = new InventoryMovement();
 				movement.guideNumber = guideNumber;
-				movement.quantityProductMoved = /,/.test(product.quantityProductMoved) ? product.quantityProductMoved.replace(/,/g, '') : product.quantityProductMoved;
+				movement.quantity = /,/.test(product.quantityProductMoved) ? product.quantityProductMoved.replace(/,/g, '') : product.quantityProductMoved;
 				movement.date = date;
 				movement.destination = product.destination;
 				movement.description = product.description;
 				movement.responsibleUser = product.responsibleUser;
-				movement.stockAfterMovement = currentInventoryStock.quantityProductStock + Number(movement.quantityProductMoved);
+				movement.stockAfterMovement = currentInventoryStock.quantity + Number(movement.quantity);
 				movement.movementType = MovementType.INCOME;
 				movement.referenceId = product.referenceId;
 				movement.referenceType = product.referenceType;
-				movement.inventoryStock = product.inventoryStockId;
-				movement.createdAt = getCurrentDate();
+				//movement.inventoryStock = product.inventoryStockId;
 
 				// Validar y sanitizar
 				const errors = await validate(movement);
@@ -156,7 +155,7 @@ export class InventoryMovementController {
 				savedMovements.push(saved);
 
 				// Actualizar inventario
-				currentInventoryStock.quantityProductStock += Number(movement.quantityProductMoved);
+				currentInventoryStock.quantity += Number(movement.quantity);
 				await inventoryStockServices.saveChanges(currentInventoryStock);
 			}
 

@@ -39,10 +39,8 @@ export class LoginComponent implements OnInit {
   public authenticate(event: AuthenticationModel): void {
     this.authenticationService.login(event).subscribe({
       next: (rm: ResponseModel) => {
-        //const userResponse = rm.response.user;
-        const userResponse = rm.response;
+        const userResponse = rm.response.user;
         console.log('Usuario que se responde de el response', userResponse);
-        console.log('Este es el Response completo', rm.response);
 
         // Construimos el objeto de usuario mapeando los almacenes
         const userData: UserModel = {
@@ -51,8 +49,7 @@ export class LoginComponent implements OnInit {
           lastName: userResponse.lastName,
           email: userResponse.email,
           token: userResponse.token,
-          //userRoles: userResponse.userRoles,
-          userRoles: userResponse.roles,
+          userRoles: userResponse.userRoles,
           warehouses:
             userResponse.userWarehouses?.map((w: any) => ({
               id: w.warehouse?.id,

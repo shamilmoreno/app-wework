@@ -64,7 +64,6 @@ export class UserController {
 			user.gender = req.body.gender
 			user.email = req.body.email;
 			user.password = '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6'
-			user.createdAt = getCurrentDate();
 
 			// Validate data user
 			const userErrors = await validate(user);

@@ -1,7 +1,7 @@
 import { sanitize } from 'class-sanitizer';
 import { Request, Response } from 'express';
 import messages from '../../core/helpers/messages';
-import { Inventory } from '../../database/entities/inventory';
+import { InventoryStock } from '../../database/entities/inventory-stock ';
 import { NotificationMiddleware } from '../../core/middlewares/notification.middleware';
 import { HttpResponseService } from '../../core/services/http-response.service';
 import { InventoryStockService } from '../../core/services/inventory-stock.service';
@@ -17,7 +17,7 @@ export class InventoryStockController {
 		try {
 			const inventoryStockService = new InventoryStockService();
 
-			const inventoryStock: Inventory[] = await inventoryStockService.list();
+			const inventoryStock: InventoryStock[] = await inventoryStockService.list();
 			HttpResponseService.response(res, 200, inventoryStock, '');
 		} catch (error) {
 			HttpResponseService.response(res, 500, error, messages.general.error);
@@ -34,7 +34,7 @@ export class InventoryStockController {
 			const inventaryStockService = new InventoryStockService();
 
 			// Find stock products
-			const inventoryStock: Inventory = await inventaryStockService.getOne(parseInt(req.params.id));
+			const inventoryStock: InventoryStock = await inventaryStockService.getOne(parseInt(req.params.id));
 
 			// Valid the info
 			if (inventoryStock) {
@@ -57,7 +57,7 @@ export class InventoryStockController {
 			const inventoryStockService = new InventoryStockService();
 
 			// Find  stock de los productos
-			const inventoryStock: Inventory = await inventoryStockService.getOneForDetail(parseInt(req.params.id));
+			const inventoryStock: InventoryStock = await inventoryStockService.getOneForDetail(parseInt(req.params.id));
 
 			// Valid the info
 			if (inventoryStock) {
@@ -80,9 +80,9 @@ export class InventoryStockController {
 			const inventoryStockService = new InventoryStockService();
 
 			// Search procedure
-			const inventoryStock: Inventory = await inventoryStockService.getOne(req.body.id);
+			const inventoryStock: InventoryStock = await inventoryStockService.getOne(req.body.id);
 			if (inventoryStock) {
-				inventoryStock.quantityProductStock = req.body.monthRecipeBag;
+				inventoryStock.quantity = req.body.monthRecipeBag;
 
 				// Validate data stock products
 				const inventoryStockErros = await validate(inventoryStock);
@@ -113,11 +113,11 @@ export class InventoryStockController {
 		try {
 			const inventoryStockService = new InventoryStockService();
 			const notificationMiddleware = new NotificationMiddleware();
-			const inventoryStock: Inventory = await inventoryStockService.getOne(parseInt(req.params.id));
+			const inventoryStock: InventoryStock = await inventoryStockService.getOne(parseInt(req.params.id));
 
 			if (inventoryStock) {
 				const data = await inventoryStockService.remove(parseInt(req.params.id));
-				if (data.affected > 0) {
+				if ((data?.affected ?? 0) > 0) {
 					HttpResponseService.response(res, 200, null, messages.inventoryStock.inventoryStockDeleted);
 				} else {
 					HttpResponseService.response(res, 401, null, messages.general.error);

@@ -1,10 +1,9 @@
 import { Trim } from 'class-sanitizer';
 import { MaxLength, MinLength } from 'class-validator';
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Subcategory } from './subcategory';
-import { Inventory } from './inventory';
-import { BagRecipeProduct } from './bag-recipe-product';
-import { InventoryMovement } from './inventory-movement';
+import { BagRecipeItem } from './bag-recipe-item';
+import { InventoryStock } from './inventory-stock ';
 
 @Entity()
 export class Product {
@@ -37,8 +36,11 @@ export class Product {
 	@Column({ type: 'float', default: 1 })
 	public unitQuantity: number; // Ej: 185 (gramos), 900 (ml), 500 (g), etc.
 
-	@Column({ type: 'date' })
-	public createdAt: string;
+	@CreateDateColumn({ type: "timestamp" })
+	public createdAt: Date;
+
+	@UpdateDateColumn({ type: "timestamp" })
+	public updatedAt: Date;
 
 	// RELATIONS
 	@ManyToOne( /** RElacion entre Product y SubCategory */
@@ -47,13 +49,12 @@ export class Product {
 		{ onDelete: 'SET NULL' })
 	public unitMeasurec: Subcategory;
 
-	@OneToMany( /** RElacion entre Product y BagRecipeProduct */
-		() => BagRecipeProduct,
-		(bagRecipeProduct: BagRecipeProduct) => bagRecipeProduct.product)
-	public bagRecipeProduct: BagRecipeProduct;
+	@OneToMany( /** RElacion entre Product y BagRecipeItem */
+		() => BagRecipeItem,
+		(bagRecipeItem: BagRecipeItem) => bagRecipeItem.product)
+	public bagRecipeItem: BagRecipeItem;
 
-	@OneToOne( /** RElacion entre Product y InventoryStock*/
-		() => Inventory,
-		(inventoryStock: Inventory) => inventoryStock.product)
-	public stock: Inventory;
+	// Dentro del modelo Product
+	@OneToMany(() => InventoryStock, (s) => s.product)
+	public stock: InventoryStock[];
 }

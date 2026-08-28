@@ -6,17 +6,23 @@
   "private": true,
   "license": "ISC",
   "engines": {
-    "node": "22.15.0",
-    "npm": "10.9.2"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "scripts": {
+    "bcv": "ts-node src/core/helpers/bcvScraper.ts",
     "start": "node dist/index.js",
     "build": "rm -rf dist || rd dist /S /Q && tsc -p tsconfig.json",
     "dev": "nodemon --exec \"npm run build && npm run start\" --watch src --ext ts"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.35",
+    "@types/node": "^20.5.1",
+    "@types/pg": "^8.23.1",
     "@types/uuid": "^10.0.0",
+    "axios": "^1.13.1",
     "bcrypt": "^5.1.0",
+    "cheerio": "^1.1.2",
     "class-sanitizer": "^1.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -28,9 +34,11 @@
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
-    "nodemailer": "^6.3.0",
-    "pg": "^8.9.0",
+    "node-cron": "^4.2.1 ",
+    "nodemailer": "^7.0.10",
+    "pg": "^8.23.0",
     "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.9.1",
     "typeorm": "^0.3.20",
     "uuid": "^10.0.0"
   },
@@ -45,7 +53,8 @@
     "@types/jsonwebtoken": "^8.3.3",
     "@types/mocha": "^5.2.7",
     "@types/morgan": "^1.7.35",
-    "@types/node": "^12.20.55",
+    "@types/mysql": "^2.15.6",
+    "@types/node": "^12.0.12",
     "@types/nodemailer": "^6.2.1",
     "@types/recursive-readdir": "^2.2.0",
     "chai": "^4.2.0",

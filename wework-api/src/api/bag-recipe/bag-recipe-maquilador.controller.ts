@@ -2,10 +2,11 @@ import { sanitize } from 'class-sanitizer';
 import { Request, Response } from 'express';
 import { HttpResponseService } from '../../core/services/http-response.service';
 import messages from '../../core/helpers/messages';
+import { parseNumberFromFormat } from '../../core/helpers/parseNumberFromFormat';
 import { BagRecipeService } from '../../core/services/bag-recipe.service';
 import { BagRecipe } from '../../database/entities/bag-recipe';
 import { BagRecipeMaquiladorService } from '../../core/services/bag-recipe-maquilador.service';
-import { BagRecipeMaquilador } from '../../database/entities/bag-recipe-maquilador';
+import { BagRecipeMaquiladorProduction } from '../../database/entities/bag-recipe-maquilador-production';
 
 export class BagRecipeMaquiladorController {
 	/**
@@ -16,7 +17,7 @@ export class BagRecipeMaquiladorController {
 	public async ctrlListByBagRecipetId(req: Request, res: Response): Promise<void> {
 		try {
 			const BbgRecipeMaquiladorService = new BagRecipeMaquiladorService();
-			const bagRecipeMaquilador: BagRecipeMaquilador[] = await BbgRecipeMaquiladorService.listByBagRecipeId(parseInt(req.params.id));
+			const bagRecipeMaquilador: BagRecipeMaquiladorProduction[] = await BbgRecipeMaquiladorService.listByBagRecipeId(parseInt(req.params.id));
 			HttpResponseService.response(res, 200, bagRecipeMaquilador, '');
 		} catch (error) {
 			HttpResponseService.response(res, 500, error, messages.general.error);
@@ -32,8 +33,8 @@ export class BagRecipeMaquiladorController {
 		try {
 			const bagRecipeService = new BagRecipeService();
 			const bagRecipeMaquiladorService = new BagRecipeMaquiladorService();
-			const maquiladors: BagRecipeMaquilador[] = req.body.maquiladors;
-			const newMaquiladors: BagRecipeMaquilador[] = [];
+			const maquiladors: BagRecipeMaquiladorProduction[] = req.body.maquiladors;
+			const newMaquiladors: BagRecipeMaquiladorProduction[] = [];
 
 			// Find Bag Recipe
 			const bagRecipe: BagRecipe = await bagRecipeService.getOneOnlyObject(req.body.id);
@@ -45,9 +46,11 @@ export class BagRecipeMaquiladorController {
 				// Working to add payments
 				if (maquiladors.length > 0) {
 					maquiladors.forEach(async (i: any) => {
-						const nMaquilador = new BagRecipeMaquilador();
-						nMaquilador.amount = Number((/,/.test(i.amount)) ? i.amount.replace(/,/g, '') : i.amount);
-						nMaquilador.maquiladorMajor = i.maquiladorMajor;
+						const nMaquilador = new BagRecipeMaquiladorProduction();
+						nMaquilador.assignedBags = parseNumberFromFormat(i.assignedBags);
+						console.log("Numero de bolsas asignadas al Maquilador sin arreglar", i.assignedBags)
+						console.log("Numero de bolsas asignadas al Maquilador ya arregladas", nMaquilador.assignedBags)
+						nMaquilador.isPrimary = i.isPrimary;
 						nMaquilador.bagRecipe = req.body.id;
 						nMaquilador.company = i.company;
 						sanitize(nMaquilador);
@@ -55,6 +58,7 @@ export class BagRecipeMaquiladorController {
 						// Save on array
 						newMaquiladors.push(nMaquilador);
 					});
+					console.log("Datos de los maquiladores a guardar en ctrlCreateOrUpdate", newMaquiladors);
 
 					// Save Changes
 					await bagRecipeMaquiladorService.saveChanges(newMaquiladors);

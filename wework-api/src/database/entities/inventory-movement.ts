@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { IsEnum, IsInt, MaxLength, MinLength } from 'class-validator';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { IsEnum, MaxLength, MinLength } from 'class-validator';
 import { Trim } from 'class-sanitizer';
-import { Inventory } from './inventory';
 import { MovementType } from '../../core/enums/movement-type.enum'
+import { Product } from './product';
+import { WareHouse } from './warehouse ';
 
 @Entity()
 export class InventoryMovement {
@@ -14,7 +15,7 @@ export class InventoryMovement {
 
 	@Column({ type: 'int' })
 	//@IsInt({ message: 'La cantidad debe ser un número entero' })
-	public quantityProductMoved: number;
+	public quantity: number;
 
 	@Column({ type: 'date' })
 	public date: string;
@@ -36,7 +37,7 @@ export class InventoryMovement {
 	@MinLength(3, { message: 'El campo <Responsable> es demasiado corto' })
 	@Trim()
 	public responsibleUser: string;
-	
+
 	@Column({ type: 'int', default: 0 }) // Refleja el stock después del movimiento
 	public stockAfterMovement: number;
 
@@ -44,17 +45,11 @@ export class InventoryMovement {
 	@IsEnum(MovementType, { message: 'Tipo de movimiento inválido' })
 	public movementType: MovementType;
 
-	@Column({ type: 'date' })
-	public createdAt: string;
+	@CreateDateColumn({ type: "timestamp" })
+	public createdAt: Date;
 
-	@ManyToOne(
-		() => Inventory,
-		(inventoryStock: Inventory) => inventoryStock.inventoryMovements,
-		{ onDelete: 'CASCADE', eager: true }
-	)
-	
-	@JoinColumn({ name: 'inventoryStockId' })
-	public inventoryStock: Inventory;
+	@UpdateDateColumn({ type: "timestamp" })
+	public updatedAt: Date;
 
 	/**
 	  * Relación genérica que indica el origen del movimiento.
@@ -72,6 +67,14 @@ export class InventoryMovement {
 
 	@Column({ type: 'varchar', length: 50, nullable: true })
 	public referenceId: string;
+
+		// RELATIONS
+	@ManyToOne(() => Product, { onDelete: "SET NULL" })
+	public product: Product;
+
+	@ManyToOne(() => WareHouse, (w) => w.movements, { onDelete: "CASCADE" })
+	public warehouse: WareHouse;
+
 }
 
 

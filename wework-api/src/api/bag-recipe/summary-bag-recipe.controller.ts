@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-import moment from "moment";
-import messages from "../../core/helpers/messages";
 import { BagRecipe } from "../../database/entities/bag-recipe";
 import { SummaryBagRecipeDataModel } from "../../core/models/summary-bag-recipe-data.model";
-import { SummaryMonthModel } from "../../core/models/summary-month.model";
 import { HttpResponseService } from "../../core/services/http-response.service";
 import { BagRecipeService } from "../../core/services/bag-recipe.service";
-import { Console } from "console";
+import messages from "../../core/helpers/messages";
+import moment from "moment";
 
 export class SummaryBagRecipeController {
 	/**
@@ -70,7 +68,7 @@ export class SummaryBagRecipeController {
 							billingAmountLessCommission: 0.0, // Se resta billingAmount menos totalCommission esto es (Facturacion - Total Comision)
 							totalFreightForProduct: 0.0, // Se suman todos ños totalFreightForProduct esto es (Total flete)
 						},
-						products: [],
+						items: [],
 					},
 				],
 			};
@@ -118,7 +116,7 @@ export class SummaryBagRecipeController {
 							billingAmountLessCommission: 0.0, // Se resta billingAmount menos totalCommission esto es (Facturacion - Total Comision)
 							totalFreightForProduct: 0.0, // Se suman todos ños totalFreightForProduct esto es (Total flete)
 						},
-						products: [],
+						items: [],
 					},
 				],
 			};
@@ -173,7 +171,7 @@ export class SummaryBagRecipeController {
 							billingAmountLessCommission: 0.0, // Se resta billingAmount menos totalCommission esto es (Facturacion - Total Comision)
 							totalFreightForProduct: 0.0, // Se suman todos ños totalFreightForProduct esto es (Total flete)
 						},
-						products: [],
+						items: [],
 					},
 				],
 			};
@@ -236,7 +234,7 @@ export class SummaryBagRecipeController {
 							billingAmountLessCommission: 0.0, // Se resta billingAmount menos totalCommission esto es (Facturacion - Total Comision)
 							totalFreightForProduct: 0.0, // Se suman todos ños totalFreightForProduct esto es (Total flete)
 						},
-						products: [],
+						items: [],
 					},
 				],
 			};
@@ -291,7 +289,7 @@ export class SummaryBagRecipeController {
 							billingAmountLessCommission: 0.0, // Se resta billingAmount menos totalCommission esto es (Facturacion - Total Comision)
 							totalFreightForProduct: 0.0, // Se suman todos ños totalFreightForProduct esto es (Total flete)
 						},
-						products: [],
+						items: [],
 					},
 				],
 			};
@@ -343,7 +341,7 @@ export class SummaryBagRecipeController {
 							billingAmountLessCommission: 0.0, // Se resta billingAmount menos totalCommission esto es (Facturacion - Total Comision)
 							totalFreightForProduct: 0.0, // Se suman todos ños totalFreightForProduct esto es (Total flete)
 						},
-						products: [],
+						items: [],
 					},
 				],
 			};
@@ -395,7 +393,7 @@ export class SummaryBagRecipeController {
 							billingAmountLessCommission: 0.0, // Se resta billingAmount menos totalCommission esto es (Facturacion - Total Comision)
 							totalFreightForProduct: 0.0, // Se suman todos ños totalFreightForProduct esto es (Total flete)
 						},
-						products: [],
+						items: [],
 					},
 				],
 			};
@@ -436,8 +434,8 @@ export class SummaryBagRecipeController {
 
 			// Filtrar los productos de cada receta directamente en el objeto original
 			resultBagRecipe.forEach((recipe) => {
-				recipe.products = recipe.products.filter(
-					(product) => product.productQuantity > 0
+				recipe.items = recipe.items.filter(
+					(item) => item.quantity > 0
 				);
 			});
 
@@ -451,7 +449,7 @@ export class SummaryBagRecipeController {
 				let valueComboSale: number = 0.0;
 				let valueComboUtility: number = 0.0;
 				let valueTotalNumberBags: number = 0;
-				let valueTotalNumberProducts: number = 0;
+				let valueTotalNumberItems: number = 0;
 				let sumFreightForProduct: number = 0.0;
 				let valueBillingAmount: number = 0.0;
 				let valueTotalCommission: number = 0.0;
@@ -465,7 +463,7 @@ export class SummaryBagRecipeController {
 				let valueProductMaquiladorCooperator: any = [];
 				let dataRecipe: {};
 
-				bagRecipe.products.forEach((p: any) => {
+				bagRecipe.items.forEach((p: any) => {
 					sumProductForBag += p.product.name !== "Bolsa" ? Number(p.productQuantity) : 0;
 					sumUnitCostPrice += Number(p.priceProduct) * Number(p.productQuantity);
 					sumTotalCostPrice += Number(p.totalCostPrice);
@@ -478,7 +476,7 @@ export class SummaryBagRecipeController {
 					valueAmountMaquiladorCooperator += Number(p.amountMaquiladorCooperator);
 					valueAmountDollarsMaquiladorMajor += Number(p.amountDollarsMaquiladorMajor);
 					valueAmountDollarsMaquiladorCooperator += Number(p.amountDollarsMaquiladorCooperator);
-					valueTotalNumberProducts += p.product.name !== "Bolsa" ? Number(p.quantityProductRequired) : 0;
+					valueTotalNumberItems += p.product.name !== "Bolsa" ? Number(p.quantityProductRequired) : 0;
 					if (p.productQuantity > 0) {
 						// Si el producto tiene un valor a 0 se incluye a la gráfica
 						valueSeriePie.push(p.quantityProductRequired);
@@ -523,7 +521,7 @@ export class SummaryBagRecipeController {
 					// Se agregan los totales
 					totals: {
 						totalNumberBags: valueTotalNumberBags,
-						totalProductsBag: valueTotalNumberProducts,
+						totalProductsBag: valueTotalNumberItems,
 						totalCostPrice: sumTotalCostPrice,
 						totalSalePrice: sumTotalSalePrice,
 						netProfit: valueTotalNumberBags * valueComboUtility,
@@ -538,7 +536,7 @@ export class SummaryBagRecipeController {
 						infoProductMaquiladorMajor: valueProductMaquiladorMajor,
 						infoProductMaquiladorCooperator: valueProductMaquiladorCooperator,
 					},
-					products: bagRecipe.products,
+					items: bagRecipe.items,
 					//surcharge: bagRecipe.surcharges[0],
 					payments: bagRecipe.payments,
 					pieChartOptions: {

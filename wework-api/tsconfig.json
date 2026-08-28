@@ -13,7 +13,8 @@
 		"esModuleInterop": true,
 		"noImplicitAny": true,
 		"typeRoots": [
-			"node_modules/@types"
+			"node_modules/@types",
+			"src/@types"
 		],
 		"paths": {
 			"*": [

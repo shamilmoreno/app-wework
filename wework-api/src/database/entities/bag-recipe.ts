@@ -1,20 +1,17 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { BagRecipeProduct } from "./bag-recipe-product";
+import { BeforeInsert, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BagRecipeItem } from "./bag-recipe-item";
 import { BagRecipePayment } from "./bag-recipe-payment";
-import { InventoryMovement } from "./inventory-movement";
 import { v4 as uuidv4 } from "uuid";
-import { BagRecipeMaquilador } from "./bag-recipe-maquilador";
+import { BagRecipeMaquiladorProduction } from "./bag-recipe-maquilador-production";
+import { WareHouse } from "./warehouse ";
 
 @Entity()
 export class BagRecipe {
   @PrimaryGeneratedColumn()
   public id: number;
+
+  @Column({ type: "varchar", length: 255, unique: true })
+  public serialCode: string;
 
   @Column({ type: "date" })
   public monthRecipeBag: string;
@@ -37,48 +34,24 @@ export class BagRecipe {
   @Column({ default: true })
   public isActive: boolean;
 
-  @Column({ type: "date" })
-  public createdAt: string;
+  @CreateDateColumn({ type: "timestamp" })
+  public createdAt: Date;
 
-  @Column({ type: "varchar", length: 255, unique: true })
-  public serialCode: string;
+  @UpdateDateColumn({ type: "timestamp" })
+  public updatedAt: Date;
 
   // RELATIONS
-  @OneToMany(
-	/** Relacion entre BagRecipe y BAgRecipeCompañías */
-    () => BagRecipeMaquilador,
-    (maquilador: BagRecipeMaquilador) => maquilador.bagRecipe
-  )
-  public maquiladors: BagRecipeMaquilador[];
+  @OneToMany(() => BagRecipeMaquiladorProduction, (m) => m.bagRecipe)
+  public maquiladors: BagRecipeMaquiladorProduction[];
 
-  @OneToMany(
-    /** Relacion entre BagRecipe y BAgRecipeProduct */
-    () => BagRecipeProduct,
-    (bagRecipeProduct: BagRecipeProduct) => bagRecipeProduct.bagRecipe
-  )
-  public products: BagRecipeProduct[];
-
-  @OneToMany(
-    /** Relacion entre BagRecipe y BagRecipePayment*/
-    () => BagRecipePayment,
-    (sp: BagRecipePayment) => sp.bagRecipe
-  )
+  @OneToMany(() => BagRecipeItem, (p) => p.bagRecipe)
+  public items: BagRecipeItem[];
+  
+  @OneToMany(() => BagRecipePayment, (pay) => pay.bagRecipe)
   public payments: BagRecipePayment[];
 
-  /** Relacion entre BagRecipe y InventoryMovement*/
- /*  @OneToMany(
-    () => InventoryMovement,
-    (inventoryMovement: InventoryMovement) => inventoryMovement.bagRecipe
-  )
-  public inventoryIssue: InventoryMovement[];
- */
-
-/*   @OneToMany(
-    () => InventoryMovement,
-    (inventoryMovement: InventoryMovement) => inventoryMovement.bagRecipe,
-    { cascade: true }
-  )
-  public inventoryIssue: InventoryMovement[]; */
+  @ManyToOne(() => WareHouse, (w) => w.bagRecipes, { onDelete: "SET NULL" })
+  public warehouse: WareHouse;
 
   @BeforeInsert()
   generateSerialCode() {

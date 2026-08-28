@@ -62,6 +62,13 @@ export default {
     subcategoryUpdated: 'Subcategoría actualizada con éxito',
     subcategoryDeleted: 'Subcategoría eliminada con éxito',
   },
+  wareHouse: {
+    wareHouseNotFound: 'Almacén no encontrado',
+    wareHouseCreated: 'Almacén guardado con éxito',
+    wareHouseUpdated: 'Almacén actualizado con éxito',
+    wareHouseDeleted: 'Almacén eliminado con éxito',
+    wareHouseDetailUpdated: 'Elementos del almacén actualizados con éxito'
+  },
   company: {
     companyNotFound: 'Compañia no encontrada',
     companyCreated: 'Compañia guardada con éxito',
@@ -128,6 +135,13 @@ export default {
   },
   summaryShipment: {
     summaryShipmentSuccess: 'Información obtenida con éxito',
+  },
+  exchangeRate: {
+    exchangeRateNotFound: 'Tasa no encontrada',
+    exchangeRateCreated: 'Tasa guardada con éxito',
+    exchangeRateUpdated: 'Tasa actualizada con éxito',
+    exchangeRateDeleted: 'Tasa eliminada con éxito',
+    exchangeRateDetailUpdated: 'Elementos de la tasa actualizados con éxito'
   },
   upload: {
     imageNotFound: 'Imagen no encontrada',

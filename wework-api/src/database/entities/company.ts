@@ -1,25 +1,12 @@
-import {
-  IsNotEmpty,
-  IsString,
-  Length,
-  Matches,
-  MaxLength,
-  MinLength,
-  ValidateIf,
-} from "class-validator";
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { BagRecipeMaquilador } from "./bag-recipe-maquilador";
+import { IsNotEmpty, IsString, Length, Matches, ValidateIf } from "class-validator";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BagRecipeMaquiladorProduction } from "./bag-recipe-maquilador-production";
+import { BagRecipeMaquiladorItem } from './bag-recipe-maquilador-item';
 
 @Entity()
 export class Company {
   @PrimaryGeneratedColumn()
-  id: number;
+  public id: number;
 
   @Column({
     length: 500,
@@ -31,7 +18,7 @@ export class Company {
   @Length(3, 500, {
     message: "El campo <businessName> debe tener entre 3 y 500 caracteres",
   })
-  businessName: string;
+  public businessName: string;
 
   @Column({
     length: 12,
@@ -44,7 +31,7 @@ export class Company {
   @Matches(/^[JGVEjgve][-][0-9]{8,9}[-][0-9]$/, {
     message: "El RIF debe tener el formato correcto (Ej: J-12345678-9)",
   })
-  documentNumber: string; // Formato RIF: J-12345678-9
+  public documentNumber: string; // Formato RIF: J-12345678-9
 
   @Column({
     length: 500,
@@ -56,16 +43,20 @@ export class Company {
   @Length(0, 500, {
     message: "El campo <address> no puede exceder los 500 caracteres",
   })
-  address?: string;
+  public address?: string;
 
   @CreateDateColumn({
     type: "timestamp",
     default: () => "CURRENT_TIMESTAMP",
     comment: "Fecha de creación del registro",
   })
-  createdAt: Date;
+  public createdAt: Date;
 
   // Relations
-  @OneToMany(() => BagRecipeMaquilador, (assignment) => assignment.company)
-  public maquiladorAssignments: BagRecipeMaquilador[];
+  @OneToMany(() => BagRecipeMaquiladorProduction, (assignment) => assignment.company)
+  public maquiladorAssignments: BagRecipeMaquiladorProduction[];
+
+  @OneToMany(() => BagRecipeMaquiladorItem, (supply) => supply.company)
+  public supplies: BagRecipeMaquiladorItem[];
+
 }

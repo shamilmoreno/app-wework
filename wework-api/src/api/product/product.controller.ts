@@ -2,16 +2,13 @@ import { sanitize } from 'class-sanitizer';
 import { Request, Response } from 'express';
 import messages from '../../core/helpers/messages';
 import { Product } from '../../database/entities/product';
-import { Inventory } from '../../database/entities/inventory';
-import { ProductDetailModel } from '../../core/models/bag-recipe-product.model';
+import { InventoryStock } from '../../database/entities/inventory-stock ';
 import { ProductService } from '../../core/services/product.service';
 import { InventoryStockService } from '../../core/services/inventory-stock.service';
 import { NotificationMiddleware } from '../../core/middlewares/notification.middleware';
 import { HttpResponseService } from '../../core/services/http-response.service';
 import { getCurrentDate } from '../../core/helpers/str-utils';
-import { BagRecipeDetailModel } from '../../core/models/bag-recipe-detail';
 import { validate } from 'class-validator';
-import moment from 'moment';
 import { InventoryMovementService } from '../../core/services/inventory-movement.service';
 import { InventoryMovement } from '../../database/entities/inventory-movement';
 import { User } from '../../database/entities/user';
@@ -29,10 +26,9 @@ export class ProductController {
 		try {
 			const productController = new ProductController();
 			const productService = new ProductService();
-			const products: Product[] = await productService.list();
-			console.log('Estos sonlos productos en list product', products);
+			const productList: Product[] = await productService.list();
 
-			//await productController.getStructureBagRecipe(products);
+			const products = await productController.getStructureListProduct(productList);
 
 			HttpResponseService.response(res, 200, products, '');
 		} catch (error) {
@@ -48,53 +44,13 @@ export class ProductController {
 	public async ctrlGetOne(req: Request, res: Response): Promise<void> {
 		try {
 			const productService = new ProductService();
-			const productList: { id: any; name: any; bagRecipeId: any; productQuantity: any; quantityProductRequired: any; priceProduct: any; priceSale: any; totalCostPrice: any; totalSalePrice: any; amountMaquilador: any; amountPaciscor: any; amountDollarsMaquilador: any; amountDollarsPaciscor: any; amountFreightForProduct: any; totalFreightForProduct: any; }[] = [];
-			let bagRecipeUpdate: BagRecipeDetailModel = {
-				id: 0,
-				monthRecipeBag: '',
-				numberBags: 0,
-				maquiladorBag: '',
-				products: [],
-				payments: [],
-				surcharges: {}
-			};
 
 			// Find Product
 			const product: Product = await productService.getOne(parseInt(req.params.id));
 
-			/* product.products.forEach((p: any) => {
-				productList.push({
-					id: p.product.id,
-					name: p.product.name,
-					bagRecipeId: p.id,
-					productQuantity: p.productQuantity,
-					quantityProductRequired: p.quantityProductRequired,
-					priceProduct: p.priceProduct,
-					priceSale: p.priceSale,
-					totalCostPrice: p.totalCostPrice,
-					totalSalePrice: p.totalSalePrice,
-					amountMaquilador: p.amountMaquilador,
-					amountPaciscor: p.amountPaciscor,
-					amountDollarsMaquilador: p.amountDollarsMaquilador,
-					amountDollarsPaciscor: p.amountDollarsPaciscor,
-					amountFreightForProduct: p.amountFreightForProduct,
-					totalFreightForProduct: p.totalFreightForProduct
-				});
-			});
-
-			bagRecipeUpdate = {
-				id: product.id,
-				monthRecipeBag: product.monthRecipeBag,
-				numberBags: product.numberBags,
-				maquiladorBag: product.maquiladorBag,
-				surcharges: product.surcharges,
-				products: productList,
-				payments: product.payments
-			}; */
-
 			// Valid the info
-			if (bagRecipeUpdate) {
-				HttpResponseService.response(res, 200, bagRecipeUpdate, '');
+			if (product) {
+				HttpResponseService.response(res, 200, product, '');
 			} else {
 				HttpResponseService.response(res, 404, null, messages.bagRecipe.bagRecipeNotFound);
 			}
@@ -112,7 +68,6 @@ export class ProductController {
 		try {
 			const productService = new ProductService();
 			const productController = new ProductController();
-			let productDetail: ProductDetailModel = {};
 
 			// Find Product
 			const product: Product = await productService.getOneForDetail(parseInt(req.params.id));
@@ -122,7 +77,7 @@ export class ProductController {
 
 			// Valid the info
 			if (product) {
-				HttpResponseService.response(res, 200, productDetail, '');
+				HttpResponseService.response(res, 200, product, '');
 			} else {
 				HttpResponseService.response(res, 404, null, messages.product.productNotFound);
 			}
@@ -162,7 +117,6 @@ export class ProductController {
 			product.imageUrl = '/resources/default.png';
 			/* product.location = req.body.location; */
 			product.unitMeasurec = req.body.unitMeasurec;
-			product.createdAt = getCurrentDate()
 
 			// Validate data Product
 			const productErros = await validate(product);
@@ -179,26 +133,24 @@ export class ProductController {
 
 			// Save data new product in Inventory Stock
 			if (newpPoduct) {
-				const productInventoryStock = new Inventory();
-				let currentInventoryStock = new Inventory();
+				const productInventoryStock = new InventoryStock();
+				let currentInventoryStock = new InventoryStock();
 				productInventoryStock.product = newpPoduct;
-				productInventoryStock.quantityProductStock = 0;
-				productInventoryStock.createdAt = getCurrentDate();
+				productInventoryStock.quantity = 0;
 				currentInventoryStock = await inventoryStockService.saveChanges(productInventoryStock);
 
 				if (currentInventoryStock) {
 					const inventoryMovement = new InventoryMovement();
 					inventoryMovement.guideNumber = 'Registro Inicial';
-					inventoryMovement.quantityProductMoved = 0;
+					inventoryMovement.quantity = 0;
 					inventoryMovement.date = getCurrentDate();
 					inventoryMovement.destination = 'Apertura de Stock';
 					inventoryMovement.description = '"Registro inicial del producto nuevo en inventario con stock asignado en 0 unidades disponibles';
 					inventoryMovement.responsibleUser = currentUser.firstName + ' ' + currentUser.lastName;
 					inventoryMovement.stockAfterMovement = 0;
 					inventoryMovement.movementType = MovementType.RETURN;
-					inventoryMovement.createdAt = getCurrentDate();
 					//inventoryMovement.bagRecipe = null
-					inventoryMovement.inventoryStock = currentInventoryStock;
+					//inventoryMovement.inventoryStock = currentInventoryStock;
 
 					inventoryMovementService.saveChanges(inventoryMovement);
 				}
@@ -276,64 +228,23 @@ export class ProductController {
 	 * @param req Solicitud
 	 * @param res Respuesta
 	 */
-	public async getStructureProduct(products: any) {
+	public async getStructureListProduct(productList: any) {
 		try {
-			/* let bagRecipesDetail: ProductDetailModel = {};
-			let sumProductForBag: number = 0.00;
-			let sumUnitCostPrice: number = 0.00;
-			let sumUnitSalePrice: number = 0.00;
-			let sumTotalCostPrice: number = 0.00;
-			let sumTotalSalePrice: number = 0.00;
-			let valueAmountMaquilador: number = 0;
-			let valueAmountPaciscor: number = 0;
-			let valueAmountDollarsMaquilador: number = 0.00;
-			let valueAmountDollarsPaciscor: number = 0.00;
-			let valueTotalNumberBags: number = 0;
-			let valueComboUtility: number = 0.00;
-			let sumFreightForProduct: number = 0.00;
-			let valueProductMaquilador: any = [];
-			let valueProductPaciscor: any = [];
-
-			products.products.forEach((p: any) => {
-				sumProductForBag += (p.product.name !== 'Armado' && p.product.name !== 'Bolsa') ? Number(p.productQuantity) : 0;
-				sumUnitCostPrice += (Number(p.priceProduct) * Number(p.productQuantity));
-				sumTotalCostPrice += Number(p.totalCostPrice);
-				sumUnitSalePrice += (Number(p.priceSale) * Number(p.productQuantity));
-				sumTotalSalePrice += Number(p.totalSalePrice);
-				valueAmountMaquilador += Number(p.amountMaquilador);
-				valueAmountPaciscor += Number(p.amountPaciscor);
-				if (Number(p.amountMaquilador) > 0) {
-					valueProductMaquilador.push({ name: p.product.name, quantity: p.amountMaquilador })
-				} else if (Number(p.amountPaciscor) > 0) {
-					valueProductPaciscor.push({ name: p.product.name, quantity: p.amountPaciscor })
-				}
-				valueAmountDollarsMaquilador += Number(p.amountDollarsMaquilador);
-				valueAmountDollarsPaciscor += Number(p.amountDollarsPaciscor);
-				valueTotalNumberBags = bagRecipes.numberBags;
-				sumFreightForProduct += Number(p.totalFreightForProduct);
-				valueComboUtility = sumUnitSalePrice - Number(sumUnitCostPrice);
-			});
-			bagRecipesDetail = {
-				id: bagRecipes.id,
-				monthRecipe: moment(bagRecipes.monthRecipeBag).format('MMMM YYYY'),
-				maquiladorBag: bagRecipes.maquiladorBag,
-				numberBags: valueTotalNumberBags,
-				productForBag: sumProductForBag,
-				bagAtCostPrice: sumUnitCostPrice,
-				bagAtSalesPrice: sumUnitSalePrice,
-				amountMaquilador: valueAmountMaquilador,
-				amountPaciscor: valueAmountPaciscor,
-				amountDollarsMaquilador: valueAmountDollarsMaquilador,
-				amountDollarsPaciscor: valueAmountDollarsPaciscor,
-				infoProductMaquilador: valueProductMaquilador,
-				infoProductPaciscor: valueProductPaciscor,
-				totalPriceCost: sumTotalCostPrice,
-				totalSalePrice: sumTotalSalePrice,
-				totalFreightForProduct: sumFreightForProduct,
-				products: bagRecipes.products,
-				payments: bagRecipes.payments
-			}; */
-			//return bagRecipesDetail;
+			const products = productList.map((p: Product) => ({
+				id: p.id,
+				sku: p.sku,
+				name: p.name,
+				imageUrl: p.imageUrl,
+				baseUnit: p.baseUnit,
+				unitQuantity: p.unitQuantity,
+				stock: p.stock?.[0] ?? null,
+				unitMeasurec: p.unitMeasurec,
+				isActive: p.isActive,
+				createdAt: p.createdAt,
+				updatedAt: p.updatedAt
+			}));
+			
+			return products;
 		} catch (error) {
 			console.log(error);
 		}

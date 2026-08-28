@@ -1,4 +1,4 @@
-import { Between, DeleteResult, getManager } from 'typeorm';
+import { DeleteResult, getManager } from 'typeorm';
 import { Product } from '../../database/entities/product';
 
 export class ProductService {
@@ -8,6 +8,22 @@ export class ProductService {
 			relations: ['unitMeasurec', 'stock'],
 			order: { name: 'ASC' },
 		});
+	}
+
+	public async listByWarehouse(warehouseId: number): Promise<Product[]> {
+		return await getManager()
+			.getRepository(Product)
+			.createQueryBuilder('product')
+			.leftJoinAndSelect('product.unitMeasurec', 'unit')
+			.leftJoinAndSelect(
+				'product.stock',
+				'stock',
+				'stock.warehouseId = :warehouseId',
+				{ warehouseId }
+			)
+			.where('product.isActive = :active', { active: true })
+			.orderBy('product.name', 'ASC')
+			.getMany();
 	}
 
 	public async getOne(productId: number): Promise<Product> {
@@ -26,7 +42,7 @@ export class ProductService {
 		});
 	}
 
-	public async getByDateFilter(init: string, end: string): Promise<Product[]> {
+	/* public async getByDateFilter(init: string, end: string): Promise<Product[]> {
 		return await getManager().getRepository(Product).find({
 			where: {
 				createdAt: Between(init, end),
@@ -34,7 +50,7 @@ export class ProductService {
 			},
 			relations: ['unitMeasurec', 'stock'],
 		});
-	}
+	} */
 
 	public async getOneOnlyObject(productId: number): Promise<Product> {
 		return await getManager().getRepository(Product).findOne({ where: { id: productId } });
