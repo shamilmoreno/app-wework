@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { checkJwt } from '../../core/middlewares/check-jwt';
 import { RoleController } from './role.controller';
+import { checkPermission } from '../../core/middlewares/check-permission';
 
 export class RoleRoutes {
   public router: Router = Router();
