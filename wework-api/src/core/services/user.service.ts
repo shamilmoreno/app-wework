@@ -14,13 +14,7 @@ export class UserService {
 
 	public async list(): Promise<User[]> {
 		return await this.userRepository.find({
-			relations: [
-				"userWarehouses",
-				"userWarehouses.warehouse",
-				"userRoles",
-				"userRoles.role",
-				"gender",
-			],
+			relations: ["userWarehouses", "userWarehouses.warehouse", "userRoles", "userRoles.role", "gender"],
 			order: { id: "DESC" },
 		});
 	}
@@ -30,17 +24,10 @@ export class UserService {
 	 * @param userId id del usuario
 	 */
 	public async getOne(userId: number): Promise<User | null> {
-		return await this.userRepository
-			.findOne({
-				relations: [
-					"userWarehouses",
-					"userWarehouses.warehouse",
-					"userRoles",
-					"userRoles.role",
-					"gender",
-				], // 'roles' se refiere a la relación UserRole
-				where: { id: userId },
-			});
+		return await this.userRepository.findOne({
+			relations: ["userWarehouses", "userWarehouses.warehouse", "userRoles", "userRoles.role", "gender"], // 'roles' se refiere a la relación UserRole
+			where: { id: userId },
+		});
 	}
 
 	/**
@@ -48,16 +35,10 @@ export class UserService {
 	 * @param userEmail Correo electronico del usuario
 	 */
 	public async verifyEmail(userEmail: string): Promise<User | null> {
-		return await this.userRepository
-			.findOne({
-				relations: [
-					"userWarehouses",
-					"userWarehouses.warehouse",
-					"userRoles",
-					"userRoles.role",
-				],
-				where: { email: userEmail },
-			});
+		return await this.userRepository.findOne({
+			relations: ["userWarehouses", "userWarehouses.warehouse", "userRoles", "userRoles.role"],
+			where: { email: userEmail },
+		});
 	}
 
 	/**
@@ -85,14 +66,15 @@ export class UserService {
 		  return await this.userRepository.findOne({ where: { id: userId, token: userToken } });
 	  } */
 
-	public async searchUserByIdAndToken(
-		userId: number,
-		userToken: string,
-	): Promise<User | null> {
+	public async searchUserByIdAndToken(userId: number, userToken: string): Promise<User | null> {
 		return await this.userRepository
 			.createQueryBuilder("user")
 			.leftJoinAndSelect("user.userWarehouses", "userWarehouse")
 			.leftJoinAndSelect("userWarehouse.warehouse", "warehouse")
+			.leftJoinAndSelect("user.userRoles", "userRole")
+			.leftJoinAndSelect("userRole.role", "role")
+			.leftJoinAndSelect("role.rolePermissions", "rolePermission")
+			.leftJoinAndSelect("rolePermission.permission", "permission")
 			.where("user.id = :id", { id: userId })
 			.andWhere("user.token = :token", { token: userToken })
 			.getOne();
@@ -118,8 +100,6 @@ export class UserService {
 	  return userFound && deleteToken ? true : false;
 	} */
 
-	
-
 	public async logout(userToken: string): Promise<boolean> {
 		try {
 			// 1. Buscamos al usuario usando el nuevo método validateToken
@@ -140,13 +120,10 @@ export class UserService {
 		}
 	}
 
-
 	/**
 	 * Valida un refresh token y devuelve un nuevo access token
 	 */
-	public async refreshUserToken(
-		refreshTokenStr: string,
-	): Promise<string | null> {
+	public async refreshUserToken(refreshTokenStr: string): Promise<string | null> {
 		const rtRepo = getRepository(RefreshToken);
 		const jwtService = new JWTService(); // <--- Ahora sí lo usamos
 
@@ -173,10 +150,7 @@ export class UserService {
 	 * @param userToken Token del usuario
 	 * @param newPassword Nueva contraseña
 	 */
-	public async changePassword(
-		userToken: string,
-		newPassword: string,
-	): Promise<boolean> {
+	public async changePassword(userToken: string, newPassword: string): Promise<boolean> {
 		let userChangePass;
 		const userFound = await this.validateToken(userToken);
 
@@ -198,10 +172,7 @@ export class UserService {
 	 * @param userToken Token del usuario
 	 * @param newPassword Nueva contraseña
 	 */
-	public async createPassword(
-		userToken: string,
-		newPassword: string,
-	): Promise<boolean> {
+	public async createPassword(userToken: string, newPassword: string): Promise<boolean> {
 		let userChangePass;
 		const userFound = await this.validateToken(userToken);
 
@@ -231,8 +202,7 @@ export class UserService {
 	}
 
 	public async getOneOnlyObject(userId: number): Promise<User | null> {
-		return await this.userRepository
-			.findOne({ where: { id: userId } });
+		return await this.userRepository.findOne({ where: { id: userId } });
 	}
 
 	/* public async listByUserId(userId: number): Promise<Role[]> {
