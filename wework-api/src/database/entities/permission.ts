@@ -21,5 +21,5 @@ export class Permission {
   public createdAt: string;
 
   @OneToMany(() => RolePermission, rolePermission => rolePermission.permission)
-  rolePermission = RolePermission[];
+  rolePermission: RolePermission[];
 }
