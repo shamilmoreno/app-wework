@@ -14,5 +14,6 @@ export class RoleRoutes {
     this.router.get('/:id([0-9]+)', checkJwt, this.rc.ctrlGetOne);
     this.router.get('/:id([0-9]+)/detail', checkJwt, this.rc.ctrlGetOneForDetail);
     this.router.delete('/:id([0-9]+)', checkJwt, this.rc.ctrlRemove);
+	this.router.put('/:id([0-9]+)/permissions', checkJwt, checkPermission('role:edit'), this.rc.ctrlSetPermissions);
   }
 }

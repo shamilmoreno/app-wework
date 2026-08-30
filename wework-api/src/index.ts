@@ -28,6 +28,7 @@ import { BagRecipeDataRoutes } from './api/bag-recipe/bag-recipe.routes';
 import { InventoryRoutes } from './api/inventory/inventory.routes';
 import { ProductRoutes } from './api/product/product.routes';
 import { RoleRoutes } from './api/role/role.routes';
+import { PermissionRoutes } from './api/permission/permission.routes';
 
 /**
  * Servidor principal de la aplicación
@@ -72,6 +73,7 @@ class Server {
 		this.app.use('/auth', new AuthRoutes().router);
 		this.app.use('/user', new UserRoutes().router);
 		this.app.use('/role', new RoleRoutes().router);
+		this.app.use('/permission', new PermissionRoutes().router);
 		this.app.use('/customer', new CustomerRoutes().router);
 		this.app.use('/company', new CompanyRoutes().router);
 		this.app.use('/exchangeRate', new ExchangeRateRoutes().router);
