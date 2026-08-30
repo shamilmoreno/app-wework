@@ -8,9 +8,9 @@ export class RolePermission {
 	public id: number;
 
 	// Relations
-	@ManyToOne(() => Role, (role: Role) => role.permissions, { onDelete: "SET NULL" })
+	@ManyToOne(() => Role, (role: Role) => role.rolePermissions, { onDelete: "SET NULL" })
 	public role: Role;
 
-	@ManyToOne(() => Permission, (permission: Permission) => permission.roles, { onDelete: "SET NULL" })
+	@ManyToOne(() => Permission, (permission: Permission) => permission.rolePermissions, { onDelete: "SET NULL" })
 	public permission: Permission;
 }
