@@ -1,6 +1,6 @@
 import { Trim } from 'class-sanitizer';
 import { MaxLength, MinLength } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RolePermission } from './role.permission';
 
 @Entity()
