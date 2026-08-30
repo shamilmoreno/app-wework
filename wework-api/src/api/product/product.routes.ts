@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { checkJwt } from "../../core/middlewares/check-jwt";
+import { checkPermission } from '../../core/middlewares/check-permission';
 import { ProductController } from "./product.controller";
 
 export class ProductRoutes {
