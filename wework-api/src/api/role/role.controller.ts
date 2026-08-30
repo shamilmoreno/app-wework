@@ -1,19 +1,19 @@
-import { sanitize } from 'class-sanitizer';
-import { validate } from 'class-validator';
-import { Request, Response } from 'express';
-import messages from '../../core/helpers/messages';
-import { getCurrentDate } from '../../core/helpers/str-utils';
-import { NotificationMiddleware } from '../../core/middlewares/notification.middleware';
-import { HttpResponseService } from '../../core/services/http-response.service';
-import { UploadService } from '../../core/services/upload.service';
-
+import { sanitize } from "class-sanitizer";
+import { validate } from "class-validator";
+import { Request, Response } from "express";
+import messages from "../../core/helpers/messages";
+import { getCurrentDate } from "../../core/helpers/str-utils";
+import { NotificationMiddleware } from "../../core/middlewares/notification.middleware";
+import { HttpResponseService } from "../../core/services/http-response.service";
+import { UploadService } from "../../core/services/upload.service";
+import { RolePermissionService } from "../../core/services/role-permission.service";
 
 // MODELS
-import { RoleModel } from '../../core/models/role.model';
-import { RoleService } from '../../core/services/role.service';
-import { Role } from '../../database/entities/role';
-import { UserService } from '../../core/services/user.service';
-import { User } from '../../database/entities/user';
+import { RoleModel } from "../../core/models/role.model";
+import { RoleService } from "../../core/services/role.service";
+import { Role } from "../../database/entities/role";
+import { UserService } from "../../core/services/user.service";
+import { User } from "../../database/entities/user";
 
 export class RoleController {
 	/**
@@ -25,7 +25,7 @@ export class RoleController {
 		try {
 			const roleService = new RoleService();
 			const role: Role[] = await roleService.list();
-			HttpResponseService.response(res, 200, role, '');
+			HttpResponseService.response(res, 200, role, "");
 		} catch (error) {
 			HttpResponseService.response(res, 500, error, messages.general.error);
 		}
@@ -46,7 +46,7 @@ export class RoleController {
 
 			// Valid the info
 			if (role) {
-				HttpResponseService.response(res, 200, role, '');
+				HttpResponseService.response(res, 200, role, "");
 			} else {
 				HttpResponseService.response(res, 404, null, messages.role.roleNotFound);
 			}
@@ -56,10 +56,10 @@ export class RoleController {
 	}
 
 	/**
-	* Crear a un nuevo rol
-	* @param req Solicitud
-	* @param res Respuesta
-	*/
+	 * Crear a un nuevo rol
+	 * @param req Solicitud
+	 * @param res Respuesta
+	 */
 	public async ctrlCreate(req: Request, res: Response): Promise<void> {
 		try {
 			const roleService = new RoleService();
@@ -83,7 +83,7 @@ export class RoleController {
 			const result = await roleService.saveChanges(role);
 			HttpResponseService.response(res, 200, result, messages.role.roleCreated);
 		} catch (error) {
-			if (error.detail.search('identificationNumber') !== -1) {
+			if (error.detail.search("identificationNumber") !== -1) {
 				HttpResponseService.response(res, 500, error, messages.provider.providerNumberExists);
 			} else {
 				HttpResponseService.response(res, 500, error, messages.general.error);
@@ -128,6 +128,33 @@ export class RoleController {
 	}
 
 	/**
+	 * Asignar/reemplazar los permisos de un rol
+	 * @param req Solicitud
+	 * @param res Respuesta
+	 */
+	public async ctrlSetPermissions(req: Request, res: Response): Promise<void> {
+		try {
+			const roleService = new RoleService();
+			const rolePermissionService = new RolePermissionService();
+
+			const roleId = parseInt(req.params.id);
+			const role: Role = await roleService.getOne(roleId);
+
+			if (!role) {
+				HttpResponseService.response(res, 404, null, messages.role.roleNotFound);
+				return;
+			}
+
+			const permissionIds: number[] = req.body.permissionIds || [];
+
+			await rolePermissionService.setPermissionsForRole(roleId, permissionIds);
+			HttpResponseService.response(res, 200, null, "Permisos del rol actualizados correctamente");
+		} catch (error) {
+			HttpResponseService.response(res, 500, error, messages.general.error);
+		}
+	}
+
+	/**
 	 * Cargar detalle del role
 	 * @param res Respuesta
 	 */
@@ -141,7 +168,7 @@ export class RoleController {
 
 			// Valid the info
 			if (role) {
-				HttpResponseService.response(res, 200, role, '');
+				HttpResponseService.response(res, 200, role, "");
 			} else {
 				HttpResponseService.response(res, 404, null, messages.role.roleNotFound);
 			}

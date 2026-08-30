@@ -246,61 +246,60 @@
   INSERT INTO "role" ("name", "createdAt") VALUES ('Viewer', '2026-01-10');
 
   -- PERMISSIONS
-  INSERT INTO "permission" ("name", "createdAt") VALUES
-    ('user:view', '2026-01-10'),
-    ('user:create', '2026-01-10'),
-    ('user:edit', '2026-01-10'),
-    ('user:delete', '2026-01-10'),
-    ('role:view', '2026-01-10'),
-    ('role:create', '2026-01-10'),
-    ('role:edit', '2026-01-10'),
-    ('role:delete', '2026-01-10'),
-    ('product:view', '2026-01-10'),
-    ('product:create', '2026-01-10'),
-    ('product:edit', '2026-01-10'),
-    ('product:delete', '2026-01-10'),
-    ('category:view', '2026-01-10'),
-    ('category:create', '2026-01-10'),
-    ('category:edit', '2026-01-10'),
-    ('category:delete', '2026-01-10'),
-    ('customer:view', '2026-01-10'),
-    ('customer:create', '2026-01-10'),
-    ('customer:edit', '2026-01-10'),
-    ('customer:delete', '2026-01-10'),
-    ('provider:view', '2026-01-10'),
-    ('provider:create', '2026-01-10'),
-    ('provider:edit', '2026-01-10'),
-    ('provider:delete', '2026-01-10'),
-    ('company:view', '2026-01-10'),
-    ('company:create', '2026-01-10'),
-    ('company:edit', '2026-01-10'),
-    ('company:delete', '2026-01-10'),
-    ('warehouse:view', '2026-01-10'),
-    ('warehouse:create', '2026-01-10'),
-    ('warehouse:edit', '2026-01-10'),
-    ('warehouse:delete', '2026-01-10'),
-    ('inventory:view', '2026-01-10'),
-    ('inventory:edit', '2026-01-10'),
-    ('bag_recipe:view', '2026-01-10'),
-    ('bag_recipe:create', '2026-01-10'),
-    ('bag_recipe:edit', '2026-01-10'),
-    ('bag_recipe:delete', '2026-01-10'),
-    ('production_order:view', '2026-01-10'),
-    ('production_order:create', '2026-01-10'),
-    ('production_order:edit', '2026-01-10'),
-    ('production_order:delete', '2026-01-10'),
-    ('shipment:view', '2026-01-10'),
-    ('shipment:create', '2026-01-10'),
-    ('shipment:edit', '2026-01-10'),
-    ('shipment:delete', '2026-01-10'),
-    ('exchange_rate:view', '2026-01-10'),
-    ('exchange_rate:edit', '2026-01-10'),
-    ('product:view_cost_price', '2026-01-10'),
-    ('product:view_sale_price', '2026-01-10'),
-    ('shipment:view_freight', '2026-01-10'),
-    ('shipment:view_admin_expense', '2026-01-10'),
-    ('shipment:view_nationalization_expense', '2026-01-10'),
-    ('shipment:view_totals', '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('user:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('user:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('user:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('user:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('role:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('role:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('role:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('role:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('category:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('category:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('category:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('category:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('customer:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('customer:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('customer:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('customer:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('provider:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('provider:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('provider:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('provider:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('company:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('company:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('company:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('company:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('inventory:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('inventory:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('production_order:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('production_order:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('production_order:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('production_order:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('exchange_rate:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('exchange_rate:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:view_cost_price', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:view_sale_price', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view_freight', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view_admin_expense', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view_nationalization_expense', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view_totals', true, '2026-01-10');
 
   -- ROLE-PERMISSIONS
   -- Administrator: TODOS los permisos
