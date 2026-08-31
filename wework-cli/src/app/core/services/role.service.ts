@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { RoleModel } from '@core/models/role.model';
-import { HttpClient } from '@angular/common/http';
-import { ResponseModel } from '@core/models/response.model';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { RoleModel } from "@core/models/role.model";
+import { HttpClient } from "@angular/common/http";
+import { ResponseModel } from "@core/models/response.model";
+import { Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable()
 export class RoleService {
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) {}
 
 	public list(): Observable<ResponseModel> {
 		return this.http.get<ResponseModel>(`${environment.server}/role`);
@@ -28,6 +28,10 @@ export class RoleService {
 
 	public detail(id: number): Observable<ResponseModel> {
 		return this.http.get<ResponseModel>(`${environment.server}/role/${id}/detail`);
+	}
+
+	public setPermissions(roleId: number, permissionIds: number[]): Observable<ResponseModel> {
+		return this.http.put<ResponseModel>(`${environment.server}/role/${roleId}/permissions`, { permissionIds });
 	}
 
 	public delete(roleId: number): Observable<ResponseModel> {
