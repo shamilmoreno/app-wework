@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <mat-card class="si-center-text">
+        <mat-card-header>
+            <h1 mat-dialog-title>Confirmación</h1>
+        </mat-card-header>
+        <mat-card-content>
+            <article>
+                <section>
+                    ¿Estas seguro/a de eliminar el rol <b>{{ name }}</b>?
+                    <br /><br />
+                    <b>IMPORTANTE:</b> Al eliminar este registro se removerán los permisos asignados y los usuarios que tengan este rol quedarán sin él<br />
+                </section>
+            </article>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-button color="accent" size="small" (click)="closeDialog()">Cancelar</button>
+            &nbsp; &nbsp;
+            <button mat-button color="warn" size="small" (click)="remove(id)">Eliminar rol</button>
+        </mat-card-actions>
+    </mat-card>
+</mat-dialog-content>
