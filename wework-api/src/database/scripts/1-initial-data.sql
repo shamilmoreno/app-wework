@@ -278,6 +278,7 @@
   INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:create', true, '2026-01-10');
   INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:edit', true, '2026-01-10');
   INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('inventory:create_movement', true, '2026-01-10');
   INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('inventory:view', true, '2026-01-10');
   INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('inventory:edit', true, '2026-01-10');
   INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:view', true, '2026-01-10');
