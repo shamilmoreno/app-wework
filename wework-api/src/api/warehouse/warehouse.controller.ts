@@ -1,11 +1,11 @@
-import { sanitize } from 'class-sanitizer';
-import { Request, Response } from 'express';
-import messages from '../../core/helpers/messages';
-import { WareHouseService } from '../../core/services/warehouse.service ';
-import { WareHouse } from '../../database/entities/warehouse ';
-import { NotificationMiddleware } from '../../core/middlewares/notification.middleware';
-import { HttpResponseService } from '../../core/services/http-response.service';
-import { validate } from 'class-validator';
+import { sanitize } from "class-sanitizer";
+import { Request, Response } from "express";
+import messages from "../../core/helpers/messages";
+import { WareHouseService } from "../../core/services/warehouse.service ";
+import { WareHouse } from "../../database/entities/warehouse ";
+import { NotificationMiddleware } from "../../core/middlewares/notification.middleware";
+import { HttpResponseService } from "../../core/services/http-response.service";
+import { validate } from "class-validator";
 
 export class WareHouseController {
 	/**
@@ -16,29 +16,35 @@ export class WareHouseController {
 	public async ctrlList(req: Request, res: Response): Promise<void> {
 		try {
 			const wareHouseService = new WareHouseService();
-			const wareHouse: WareHouse[] = await wareHouseService.list();
-			HttpResponseService.response(res, 200, wareHouse, '');
+			const warehouseIds: number[] = (req as any).warehouseIds || [];
+			const wareHouse: WareHouse[] = await wareHouseService.listByIds(warehouseIds);
+			HttpResponseService.response(res, 200, wareHouse, "");
 		} catch (error) {
 			HttpResponseService.response(res, 500, error, messages.general.error);
 		}
 	}
 
 	/**
-	* Cargar Almacenes por Id
-	* @param req Solicitud
-	* @param res Respuesta
-	*/
+	 * Cargar Almacenes por Id
+	 * @param req Solicitud
+	 * @param res Respuesta
+	 */
 	public async ctrlGetOne(req: Request, res: Response): Promise<void> {
 		try {
-			// Find wareHouse
 			const wareHouseService = new WareHouseService();
+			const warehouseIds: number[] = (req as any).warehouseIds || [];
+			const requestedId = parseInt(req.params.id);
 
-			// Find wareHouse
-			const wareHouse: WareHouse = await wareHouseService.getOne(parseInt(req.params.id));
+			// Verifica que el usuario tenga acceso a este almacén específico
+			if (!warehouseIds.includes(requestedId)) {
+				HttpResponseService.response(res, 403, null, "No tienes acceso a este almacén");
+				return;
+			}
 
-			// Valid the info
+			const wareHouse: WareHouse = await wareHouseService.getOne(requestedId);
+
 			if (wareHouse) {
-				HttpResponseService.response(res, 200, wareHouse, '');
+				HttpResponseService.response(res, 200, wareHouse, "");
 			} else {
 				HttpResponseService.response(res, 404, null, messages.wareHouse.wareHouseNotFound);
 			}
@@ -48,10 +54,10 @@ export class WareHouseController {
 	}
 
 	/**
-		 * Crea un nuevo almacén
-		 * @param req Solicitud
-		 * @param res Respuesta
-		 */
+	 * Crea un nuevo almacén
+	 * @param req Solicitud
+	 * @param res Respuesta
+	 */
 	public async ctrlCreate(req: Request, res: Response): Promise<void> {
 		try {
 			const wareHouseService = new WareHouseService();
@@ -145,5 +151,4 @@ export class WareHouseController {
 			HttpResponseService.response(res, 500, error, messages.general.error);
 		}
 	}
-
 }
