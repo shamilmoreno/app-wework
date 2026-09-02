@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UnsubscribeOnDestroyAdapter } from '@shared/helpers/UnsubscribeOnDestroyAdapter';
+import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 
 // ANGULAR MATERIAL
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -35,6 +36,7 @@ import { ActionEventModel } from '@core/models/action-event.model';
 	standalone: true,
 	imports: [
 		CommonModule,
+		BreadcrumbComponent,
 		MatPaginatorModule,
 		MatSortModule,
 		MatMenuTrigger,
