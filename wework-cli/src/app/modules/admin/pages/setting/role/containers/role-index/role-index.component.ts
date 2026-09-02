@@ -16,7 +16,7 @@ import { PermissionService } from '@core/services/permission.service';
 // COMPONENTS
 import { RoleListComponent } from '../../components/role-list/role-list.component';
 import { RoleManageComponent } from '../../components/role-manage/role-manage.component';
-import { RolePermissionsComponent } from '../../components/role-permissions/role-permissions.component';
+import { RolePermissionsComponent } from '../../components/role-permission/role-permission.component';
 import { RoleDeleteComponent } from '../../components/role-delete/role-delete.component';
 
 @Component({
