@@ -2,8 +2,8 @@
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('pai', 'Países', 'Listado de paises disponibles', true);
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('gen', 'Géneros', 'Lista de géneros disponibles', true);
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('ide', 'Tipos de identidades', 'Tipos de documentos de identidad', false);
-  
--- CATEGORÍAS (Embarques)  
+
+-- CATEGORÍAS (Embarques)
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('dde', 'Descripciones del Embarque', 'Listado de descripciones de Embarques', true);
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('tpe', 'Tipos de embarques', 'Listado de los tipos de Embarques', true);
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('ede', 'Estatus de embarques', 'Listado de los estatus de Embarques', false);
@@ -12,7 +12,7 @@
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('mpe', 'Marcas de productos para embarques', 'Listado Marcas Productos de Embarque', true);
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('gaa', 'Categorías de Gastos Administrativos', 'Listado de tipos de gastos administrativos', true);
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('gan', 'Tipos de gastos de nacionalización', 'Listado de tipos de gastos de nacionalización', true);
-  
+
 -- CATEGORÍAS (Recipe Bolsa)
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('mrb', 'Maquiladores para receta de bolsas', 'Listado maquiladores para receta bolsa', true);
   INSERT INTO "category" ("nem", "name", "description", "editable") VALUES ('tmp', 'Tipos de medidas para los productos','Listado de medidas para los productos', true);
@@ -238,29 +238,120 @@
   INSERT INTO "ware_house" ("code", "name", "address", "description", "stateId", "cityId", "isActive") VALUES ('ALM-CCS-GUATIRE', 'DEPOSITO GRUPO TATMAK','Guatire', 'Almacen secundario', 14, 4, true);
 
   -- ROLES
-  INSERT INTO "role" ("name", "createdAt") VALUES ('Administrator', '2023-01-10');
-  INSERT INTO "role" ("name", "createdAt") VALUES ('Recipe Manager', '2023-01-10');
-  INSERT INTO "role" ("name", "createdAt") VALUES ('Inventory Manager', '2023-01-10');
-  INSERT INTO "role" ("name", "createdAt") VALUES ('Import Manager', '2023-01-10');
+  INSERT INTO "role" ("name", "createdAt") VALUES ('Administrator', '2026-01-10');
+  INSERT INTO "role" ("name", "createdAt") VALUES ('Recipe Manager', '2026-01-10');
+  INSERT INTO "role" ("name", "createdAt") VALUES ('Inventory Manager', '2026-01-10');
+  INSERT INTO "role" ("name", "createdAt") VALUES ('Import Manager', '2026-01-10');
+  INSERT INTO "role" ("name", "createdAt") VALUES ('Finance Manager', '2026-01-10');
+  INSERT INTO "role" ("name", "createdAt") VALUES ('Viewer', '2026-01-10');
 
   -- PERMISSIONS
-  INSERT INTO "permission" ("name", "createdAt") VALUES ('create', '2023-01-10');
-  INSERT INTO "permission" ("name", "createdAt") VALUES ('edit', '2023-01-10');
-  INSERT INTO "permission" ("name", "createdAt") VALUES ('delete', '2023-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('user:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('user:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('user:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('user:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('role:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('role:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('role:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('role:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('category:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('category:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('category:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('category:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('customer:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('customer:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('customer:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('customer:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('provider:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('provider:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('provider:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('provider:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('company:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('company:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('company:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('company:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('warehouse:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('inventory:create_movement', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('inventory:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('inventory:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('bag_recipe:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('production_order:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('production_order:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('production_order:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('production_order:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:create', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:delete', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('exchange_rate:view', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('exchange_rate:edit', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:view_cost_price', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('product:view_sale_price', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view_freight', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view_admin_expense', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view_nationalization_expense', true, '2026-01-10');
+  INSERT INTO "permission" ("name", "isActive", "createdAt") VALUES ('shipment:view_totals', true, '2026-01-10');
 
   -- ROLE-PERMISSIONS
-  INSERT INTO "role_permission" ("roleId", "permissionId") VALUES (1, 1);
-  INSERT INTO "role_permission" ("roleId", "permissionId") VALUES (1, 2);
-  INSERT INTO "role_permission" ("roleId", "permissionId") VALUES (1, 3);
-  INSERT INTO "role_permission" ("roleId", "permissionId") VALUES (3, 3);
+  -- Administrator: TODOS los permisos
+  INSERT INTO "role_permission" ("roleId", "permissionId")
+  SELECT r.id, p.id FROM "role" r, "permission" p
+  WHERE r.name = 'Administrator';
+
+  -- Recipe Manager: recetas de bolsas, producción, y ver productos (sin precios)
+  INSERT INTO "role_permission" ("roleId", "permissionId")
+  SELECT r.id, p.id FROM "role" r, "permission" p
+  WHERE r.name = 'Recipe Manager'
+    AND (p.name LIKE 'bag_recipe:%' OR p.name LIKE 'production_order:%' OR p.name = 'product:view');
+
+  -- Inventory Manager: inventario, almacenes, y ver productos (sin precios)
+  INSERT INTO "role_permission" ("roleId", "permissionId")
+  SELECT r.id, p.id FROM "role" r, "permission" p
+  WHERE r.name = 'Inventory Manager'
+    AND (p.name LIKE 'inventory:%' OR p.name LIKE 'warehouse:%' OR p.name = 'product:view');
+
+  -- Import Manager: embarques, tasa de cambio, y proveedores
+  INSERT INTO "role_permission" ("roleId", "permissionId")
+  SELECT r.id, p.id FROM "role" r, "permission" p
+  WHERE r.name = 'Import Manager'
+    AND (p.name LIKE 'shipment:%' OR p.name LIKE 'exchange_rate:%' OR p.name LIKE 'provider:%');
+
+  -- Finance Manager: costos, precios, totales monetarios, y tasa de cambio
+  INSERT INTO "role_permission" ("roleId", "permissionId")
+  SELECT r.id, p.id FROM "role" r, "permission" p
+  WHERE r.name = 'Finance Manager'
+    AND (p.name IN (
+      'product:view_cost_price',
+      'product:view_sale_price',
+      'shipment:view_totals',
+      'shipment:view_admin_expense',
+      'shipment:view_nationalization_expense',
+      'exchange_rate:view'
+    ));
+
+  -- Viewer: solo lectura de todo (incluye los permisos especiales de "view")
+  INSERT INTO "role_permission" ("roleId", "permissionId")
+  SELECT r.id, p.id FROM "role" r, "permission" p
+  WHERE r.name = 'Viewer'
+    AND (p.name LIKE '%:view' OR p.name LIKE '%:view_%');
 
   -- USUARIOS
-  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Shamil', 'Moreno', 'shamilmoreno@gmail.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 10, '2023-01-10');
-  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Administrator', 'Genral', 'admin@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 10, '2023-01-10');
-  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Elymer', 'Zabala', 'elymer.zabala@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 11, '2023-01-10');
-  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Jeyderment', 'Defitt', 'jeyderment.defitt@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 10, '2023-01-10');
-  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Dimaiscar', 'Gomez', 'dimaiscar.gomez@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 10, '2023-01-10');
-  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Kelly', 'Vega', 'kelly.vega@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 11, '2023-01-10');
+  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Shamil', 'Moreno', 'shamilmoreno@gmail.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 10, '2026-01-10');
+  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Administrator', 'Genral', 'admin@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 10, '2026-01-10');
+  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Elymer', 'Zabala', 'elymer.zabala@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 11, '2026-01-10');
+  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Jeyderment', 'Defitt', 'jeyderment.defitt@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 10, '2026-01-10');
+  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Dimaiscar', 'Gomez', 'dimaiscar.gomez@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 10, '2026-01-10');
+  INSERT INTO "user" ("firstName", "lastName", "email", "password", "token", "genderId", "createdAt") VALUES ('Kelly', 'Vega', 'kelly.vega@weworkintegrados.com', '$2b$08$udVCQ.E/DMdtzW340oU.X.iJj85Jbq8YzZrWAavLy4mq9bBmhUSP6', null, 11, '2026-01-10');
 
   -- USERS-WAREHOUSE
   INSERT INTO "user_warehouse" ("userId", "warehouseId") VALUES (1, 1);
@@ -276,8 +367,6 @@
   INSERT INTO "user_role" ("userId", "roleId") VALUES (4, 3);
   INSERT INTO "user_role" ("userId", "roleId") VALUES (5, 3);
   INSERT INTO "user_role" ("userId", "roleId") VALUES (6, 4);
-
-
 
 -- PRODUCTS
   -- RUBRO (Aceite Vegetal de Palma y/o Soya)

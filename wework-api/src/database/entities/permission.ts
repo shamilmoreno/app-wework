@@ -1,7 +1,7 @@
 import { Trim } from 'class-sanitizer';
 import { MaxLength, MinLength } from 'class-validator';
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Role } from './role';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { RolePermission } from './role.permission';
 
 @Entity()
 export class Permission {
@@ -20,8 +20,6 @@ export class Permission {
   @Column({ type: 'date' })
   public createdAt: string;
 
-  @ManyToMany(
-    () => Role, 
-    (role: Role) => role.permissions)
-    public roles: Role[];
+  @OneToMany(() => RolePermission, rolePermission => rolePermission.permission)
+  rolePermissions: RolePermission[];
 }

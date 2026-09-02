@@ -1,45 +1,46 @@
-import { DeleteResult, getManager } from 'typeorm';
-import { Product } from '../../database/entities/product';
+import { DeleteResult, getManager } from "typeorm";
+import { Product } from "../../database/entities/product";
 
 export class ProductService {
 	public async list(): Promise<Product[]> {
-		return await getManager().getRepository(Product).find({
-			where: { isActive: true },
-			relations: ['unitMeasurec', 'stock'],
-			order: { name: 'ASC' },
-		});
+		return await getManager()
+			.getRepository(Product)
+			.find({
+				where: { isActive: true },
+				relations: ["unitMeasurec", "stock"],
+				order: { name: "ASC" },
+			});
 	}
 
 	public async listByWarehouse(warehouseId: number): Promise<Product[]> {
 		return await getManager()
 			.getRepository(Product)
-			.createQueryBuilder('product')
-			.leftJoinAndSelect('product.unitMeasurec', 'unit')
-			.leftJoinAndSelect(
-				'product.stock',
-				'stock',
-				'stock.warehouseId = :warehouseId',
-				{ warehouseId }
-			)
-			.where('product.isActive = :active', { active: true })
-			.orderBy('product.name', 'ASC')
+			.createQueryBuilder("product")
+			.leftJoinAndSelect("product.unitMeasurec", "unit")
+			.leftJoinAndSelect("product.stock", "stock", "stock.warehouseId = :warehouseId", { warehouseId })
+			.where("product.isActive = :active", { active: true })
+			.orderBy("product.name", "ASC")
 			.getMany();
 	}
 
 	public async getOne(productId: number): Promise<Product> {
-		return await getManager().getRepository(Product).findOne({
-			where: { id: productId, isActive: true },
-			relations: ['unitMeasurec', 'stock'],
-			order: { name: 'ASC' },
-		});
+		return await getManager()
+			.getRepository(Product)
+			.findOne({
+				where: { id: productId, isActive: true },
+				relations: ["unitMeasurec", "stock"],
+				order: { name: "ASC" },
+			});
 	}
 
 	public async getOneForDetail(productId: number): Promise<Product> {
-		return await getManager().getRepository(Product).findOne({
-			relations: ['unitMeasurec', 'stock'],
-			where: { id: productId, isActive: true },
-			order: { name: 'DESC' },
-		});
+		return await getManager()
+			.getRepository(Product)
+			.findOne({
+				relations: ["unitMeasurec", "stock"],
+				where: { id: productId, isActive: true },
+				order: { name: "DESC" },
+			});
 	}
 
 	/* public async getByDateFilter(init: string, end: string): Promise<Product[]> {
@@ -53,7 +54,9 @@ export class ProductService {
 	} */
 
 	public async getOneOnlyObject(productId: number): Promise<Product> {
-		return await getManager().getRepository(Product).findOne({ where: { id: productId } });
+		return await getManager()
+			.getRepository(Product)
+			.findOne({ where: { id: productId } });
 	}
 
 	public async saveChanges(product: Product): Promise<Product> {
