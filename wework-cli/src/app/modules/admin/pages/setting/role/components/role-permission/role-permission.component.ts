@@ -22,11 +22,11 @@ interface PermissionGroup {
 }
 
 @Component({
-	selector: "app-role-permissions",
+	selector: "app-role-permission",
 	standalone: true,
 	imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatCheckboxModule, MatButtonModule, MatExpansionModule],
-	templateUrl: "./role-permissions.component.html",
-	styleUrl: "./role-permissions.component.scss",
+	templateUrl: "./role-permission.component.html",
+	styleUrl: "./role-permission.component.scss",
 })
 export class RolePermissionsComponent implements OnInit {
 	@Output() public savePermissions = new EventEmitter<number[]>();
