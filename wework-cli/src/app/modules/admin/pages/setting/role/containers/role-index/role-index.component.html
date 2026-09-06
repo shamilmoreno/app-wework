@@ -1,1 +1,7 @@
-<app-role-list></app-role-list>>
+<app-role-list
+    [roleList]="roleList"
+    [searchTittle]="searchTittle"
+    [columns]="columns"
+    [breadscrums]="breadscrums"
+    (action)="actionCapture($event)">
+</app-role-list>
