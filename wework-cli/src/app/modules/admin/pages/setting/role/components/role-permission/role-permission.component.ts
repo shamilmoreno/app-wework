@@ -1,20 +1,20 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Inject, OnInit, Output } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
 
 // ANGULAR MATERIAL
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatButtonModule } from "@angular/material/button";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 // MODELS
-import { RoleModel } from '@core/models/role.model';
-import { PermissionModel } from '@core/models/permission.model';
-import { ResponseModel } from '@core/models/response.model';
+import { RoleModel } from "@core/models/role.model";
+import { PermissionModel } from "@core/models/permission.model";
+import { ResponseModel } from "@core/models/response.model";
 
 // SERVICES
-import { RoleService } from '@core/services/role.service';
+import { RoleService } from "@core/services/role.service";
 
 interface PermissionGroup {
 	resource: string;
@@ -22,18 +22,11 @@ interface PermissionGroup {
 }
 
 @Component({
-	selector: 'app-role-permissions',
+	selector: "app-role-permissions",
 	standalone: true,
-	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatDialogModule,
-		MatCheckboxModule,
-		MatButtonModule,
-		MatExpansionModule,
-	],
-	templateUrl: './role-permissions.component.html',
-	styleUrl: './role-permissions.component.scss',
+	imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatCheckboxModule, MatButtonModule, MatExpansionModule],
+	templateUrl: "./role-permissions.component.html",
+	styleUrl: "./role-permissions.component.scss",
 })
 export class RolePermissionsComponent implements OnInit {
 	@Output() public savePermissions = new EventEmitter<number[]>();
@@ -48,7 +41,7 @@ export class RolePermissionsComponent implements OnInit {
 		private roleService: RoleService,
 		public dialogRef: MatDialogRef<RolePermissionsComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
-	) { }
+	) {}
 
 	ngOnInit(): void {
 		this.role = this.data.role;
@@ -62,7 +55,7 @@ export class RolePermissionsComponent implements OnInit {
 		const groups: { [key: string]: PermissionModel[] } = {};
 
 		this.permissionList.forEach((permission) => {
-			const resource = permission.name?.split(':')[0] || 'otros';
+			const resource = permission.name?.split(":")[0] || "otros";
 			if (!groups[resource]) groups[resource] = [];
 			groups[resource].push(permission);
 		});
@@ -76,8 +69,7 @@ export class RolePermissionsComponent implements OnInit {
 	private fetchRoleCurrentPermissions(): void {
 		this.roleService.detail(this.role.id!).subscribe({
 			next: (rm: ResponseModel) => {
-				const currentPermissionIds: number[] = (rm.response.rolePermissions || [])
-					.map((rp: any) => rp.permission.id);
+				const currentPermissionIds: number[] = (rm.response.rolePermissions || []).map((rp: any) => rp.permission.id);
 
 				this.buildForm(currentPermissionIds);
 				this.isLoading = false;
@@ -85,7 +77,7 @@ export class RolePermissionsComponent implements OnInit {
 			error: () => {
 				this.buildForm([]);
 				this.isLoading = false;
-			}
+			},
 		});
 	}
 
@@ -106,9 +98,12 @@ export class RolePermissionsComponent implements OnInit {
 	}
 
 	public isGroupFullyChecked(group: PermissionGroup): boolean {
-		return group.permissions.every((permission) =>
-			this.permissionsForm?.get(`permission_${permission.id}`)?.value
-		);
+		return group.permissions.every((permission) => this.permissionsForm?.get(`permission_${permission.id}`)?.value);
+	}
+
+	public isGroupIndeterminate(group: PermissionGroup): boolean {
+		const someChecked = group.permissions.some((permission) => this.permissionsForm?.get(`permission_${permission.id}`)?.value);
+		return someChecked && !this.isGroupFullyChecked(group);
 	}
 
 	public saveChanges(): void {
