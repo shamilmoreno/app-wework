@@ -27,6 +27,7 @@ interface PermissionGroup {
 	imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatCheckboxModule, MatButtonModule, MatExpansionModule],
 	templateUrl: "./role-permission.component.html",
 	styleUrl: "./role-permission.component.scss",
+	providers: [RoleService]
 })
 export class RolePermissionsComponent implements OnInit {
 	@Output() public savePermissions = new EventEmitter<number[]>();
