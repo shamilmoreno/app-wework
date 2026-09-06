@@ -41,6 +41,7 @@ export class RoleService {
 			.getRepository(Role)
 			.findOne({
 				where: { id: roleId },
+				relations: ['rolePermissions', 'rolePermissions.permission'],
 			});
 	}
 

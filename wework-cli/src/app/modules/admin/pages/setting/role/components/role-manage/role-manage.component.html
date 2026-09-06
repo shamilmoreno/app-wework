@@ -1,0 +1,18 @@
+<mat-dialog-content>
+	<h1 mat-dialog-title>{{ dialogTitle }}</h1>
+	<form [formGroup]="roleForm" (ngSubmit)="saveChanges($event)">
+		<mat-form-field appearance="outline" class="w-100">
+			<mat-label>Nombre del rol</mat-label>
+			<input matInput formControlName="name" placeholder="Ej. Recipe Manager">
+			<mat-error *ngIf="f['name'].hasError('required')">
+				El nombre del rol es requerido
+			</mat-error>
+		</mat-form-field>
+
+		<mat-dialog-actions align="end">
+			<button mat-button type="button" color="accent" (click)="closeDialog()">Cancelar</button>
+			&nbsp; &nbsp;
+			<button mat-button type="submit" color="primary">Guardar</button>
+		</mat-dialog-actions>
+	</form>
+</mat-dialog-content>
