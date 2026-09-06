@@ -3,12 +3,17 @@ import { Routes } from "@angular/router";
 export const SETTING_ROUTES: Routes = [
 	{
 		path: "",
-		redirectTo: "system-value/index",
+		redirectTo: "system-value",
 		pathMatch: "full",
 	},
 	{
 		path: "system-value",
 		children: [
+			{
+				path: "",
+				redirectTo: "index",
+				pathMatch: "full",
+			},
 			{
 				path: "index",
 				loadComponent: () =>
@@ -29,6 +34,11 @@ export const SETTING_ROUTES: Routes = [
 		path: "user",
 		children: [
 			{
+				path: "",
+				redirectTo: "list",
+				pathMatch: "full",
+			},
+			{
 				path: "list",
 				loadComponent: () => import("./user/containers/user-index/user-index.component").then((m) => m.UserIndexComponent),
 			},
@@ -38,6 +48,11 @@ export const SETTING_ROUTES: Routes = [
 	{
 		path: "role",
 		children: [
+			{
+				path: "",
+				redirectTo: "list",
+				pathMatch: "full",
+			},
 			{
 				path: "list",
 				loadComponent: () => import("./role/containers/role-index/role-index.component").then((m) => m.RoleIndexComponent),

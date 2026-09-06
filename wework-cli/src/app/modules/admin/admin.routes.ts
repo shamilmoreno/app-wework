@@ -7,11 +7,6 @@ export const ADMIN_ROUTES: Routes = [
 		component: AdministratorComponent,
 		children: [
 			{
-				path: '',
-				redirectTo: 'dashboard',
-				pathMatch: 'full',
-			},
-			{
 				path: 'welcome',
 				loadChildren: () => import('../home/home.routes').then((m) => m.HOME_ROUTES),
 			},
