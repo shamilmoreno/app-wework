@@ -31,7 +31,7 @@ export class RoleIndexComponent implements OnInit {
 	public roleList: RoleModel[] = [];
 	public permissionList: PermissionModel[] = [];
 	public role!: RoleModel;
-	public searchTittle: string | undefined;
+	public searchTittle: string = "";
 	public columns: Array<any> = [];
 	public isTblLoading: boolean | undefined;
 	public breadscrums = [
