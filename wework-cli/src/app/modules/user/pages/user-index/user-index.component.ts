@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 
+
 // MODELS
+import { RoleModel } from '@core/models/role.model';
 import { ResponseModel } from '@core/models/response.model';
 import { UserModel } from '@core/models/user.model';
 
@@ -11,12 +13,14 @@ import { UserModel } from '@core/models/user.model';
 import { MatDialog } from "@angular/material/dialog";
 import { UserService } from '@core/services/user.service';
 import { UserStoreService } from '@core/services/user-store-services';
+import { RoleService } from '@core/services/role.service';
 
 // components
 import { UserListComponent } from "../../components/user-list/user-list.component";
 import { UserManageComponent } from "../../components/user-manage/user-manage.component";
 import { UserDetailComponent } from "../../components/user-detail/user-detail.component";
 import { UserDeleteComponent } from "../../components/user-delete/user-delete.component";
+import { UserRolesComponent } from '../../components/user-roles/user-roles.component';
 
 @Component({
 	selector: 'app-user-index',
@@ -40,6 +44,7 @@ export class UserIndexComponent {
 	public searchTittle: string | undefined;
 	public columns: Array<any> = [];
 	public isTblLoading: boolean | undefined;
+	public roleList: RoleModel[] = [];
 	public breadscrums = [
 		{
 			title: 'Todos los Usuarios',
@@ -51,12 +56,14 @@ export class UserIndexComponent {
 	constructor(
 		public dialogService: MatDialog,
 		private userService: UserService,
-		private storeService: UserStoreService
+		private storeService: UserStoreService,
+		private roleService: RoleService,
 	) { }
 
 	ngOnInit(): void {
 		console.log('Bienvenido al Componente de Almacenes');
 		this.fetchUserList();
+		this.fetchRoleList();
 	}
 
 	public actionCapture(info: any) {
@@ -65,8 +72,38 @@ export class UserIndexComponent {
 			case 'detail': this.openDetailDialog(info.data.row.id); break;
 			case 'delete': this.openDeleteDialog(info.data.row); break;
 			case 'select': this.storeService.setActiveUser(info.data.row); break;
+			case 'roles': this.openRolesDialog(info); break;
 		}
 	}
+
+
+	public fetchRoleList(): void {
+		this.roleService.list().subscribe({
+			next: (rm: ResponseModel) => { this.roleList = rm.response; },
+		});
+	}
+
+	public openRolesDialog(info: any) {
+		const user = info.data.row;
+		const userRoles = this.dialogService.open(UserRolesComponent, {
+			data: { user, roleList: this.roleList },
+			width: '400px',
+		});
+
+		userRoles.componentInstance.saveRoles.subscribe((roles: RoleModel[]) => {
+			this.userService.saveRoles(user.id, roles).subscribe({
+				next: (rm: ResponseModel) => {
+					userRoles.close();
+					Swal.fire({ title: rm.message, icon: 'success' });
+				},
+				error: (err) => {
+					const error: ResponseModel = err.error;
+					Swal.fire({ title: error.message, icon: 'error' });
+				},
+			});
+		});
+	}
+
 
 	public fetchUserList(): void {
 		moment.locale('es')

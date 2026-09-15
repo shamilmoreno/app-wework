@@ -1,38 +1,27 @@
-import {
-	AfterViewInit,
-	Component,
-	ElementRef,
-	EventEmitter,
-	Input,
-	OnChanges,
-	OnInit,
-	Output,
-	SimpleChanges,
-	ViewChild,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { UnsubscribeOnDestroyAdapter } from '@shared/helpers/UnsubscribeOnDestroyAdapter';
-import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { UnsubscribeOnDestroyAdapter } from "@shared/helpers/UnsubscribeOnDestroyAdapter";
+import { BreadcrumbComponent } from "@shared/components/breadcrumb/breadcrumb.component";
 
 // ANGULAR MATERIAL
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatMenuModule, MatMenuTrigger } from "@angular/material/menu";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatDialog } from "@angular/material/dialog";
+import { MatSort, MatSortModule } from "@angular/material/sort";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTableModule } from "@angular/material/table";
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 // MODELS
-import { RoleModel } from '@core/models/role.model';
-import { ActionEventModel } from '@core/models/action-event.model';
+import { RoleModel } from "@core/models/role.model";
+import { ActionEventModel } from "@core/models/action-event.model";
 
 @Component({
-	selector: 'app-role-list',
+	selector: "app-role-list",
 	standalone: true,
 	imports: [
 		CommonModule,
@@ -47,18 +36,18 @@ import { ActionEventModel } from '@core/models/action-event.model';
 		MatInputModule,
 		MatFormFieldModule,
 	],
-	templateUrl: './role-list.component.html',
-	styleUrl: './role-list.component.scss'
+	templateUrl: "./role-list.component.html",
+	styleUrl: "./role-list.component.scss",
 })
 export class RoleListComponent extends UnsubscribeOnDestroyAdapter implements OnInit, OnChanges, AfterViewInit {
 	@ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 	@ViewChild(MatSort, { static: true }) sort: MatSort | undefined;
-	@ViewChild('filter', { static: true }) filter: ElementRef | undefined;
+	@ViewChild("filter", { static: true }) filter: ElementRef | undefined;
 	@ViewChild(MatMenuTrigger) contextMenu!: MatMenuTrigger;
 	@Output() public action = new EventEmitter<ActionEventModel>();
 	@Input() public showNew: boolean = true;
 	@Input() public roleList: Array<any> = [];
-	@Input() public searchTittle: string = '';
+	@Input() public searchTittle: string = "";
 	@Input() public columns: Array<any> = [];
 	@Input() public breadscrums: any = null;
 
@@ -75,8 +64,8 @@ export class RoleListComponent extends UnsubscribeOnDestroyAdapter implements On
 
 	ngOnInit(): void {
 		this.columns = [
-			{ label: 'NOMBRE', name: 'name' },
-			{ label: 'Acción', name: 'actions' },
+			{ label: "NOMBRE", name: "name" },
+			{ label: "Acción", name: "actions" },
 		];
 
 		this.displayedColumns = this.columns.map((column) => column.name);
@@ -102,19 +91,19 @@ export class RoleListComponent extends UnsubscribeOnDestroyAdapter implements On
 	}
 
 	public create() {
-		this.action.emit({ action: { label: '', name: 'manage' }, data: undefined });
+		this.action.emit({ action: { label: "", name: "manage" }, data: undefined });
 	}
 
 	public update(row: any) {
-		this.action.emit({ action: { label: '', name: 'manage' }, data: { row } });
+		this.action.emit({ action: { label: "", name: "manage" }, data: { row } });
 	}
 
 	// Abre el checklist de permisos para este rol
 	public managePermissions(row: any) {
-		this.action.emit({ action: { label: '', name: 'permissions' }, data: { row } });
+		this.action.emit({ action: { label: "", name: "permissions" }, data: { row } });
 	}
 
 	public delete(row: any) {
-		this.action.emit({ action: { label: '', name: 'delete' }, data: { row } });
+		this.action.emit({ action: { label: "", name: "delete" }, data: { row } });
 	}
 }

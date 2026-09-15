@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Roles del usuario: {{ user.firstName }} {{ user.lastName }}</h2>
+
+<mat-dialog-content>
+	<div *ngIf="isLoading">Cargando roles...</div>
+
+	<form *ngIf="!isLoading" [formGroup]="rolesForm">
+		<mat-checkbox *ngFor="let role of roleList" [formControlName]="'role_' + role.id">
+			{{ role.name }}
+		</mat-checkbox>
+	</form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+	<button mat-button (click)="closeDialog()">Cancelar</button>
+	<button mat-raised-button color="primary" [disabled]="isLoading" (click)="saveChanges()">Guardar cambios</button>
+</mat-dialog-actions>

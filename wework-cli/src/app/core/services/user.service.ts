@@ -50,6 +50,10 @@ export class UserService {
 		});
 	}
 
+	public listRoles(userId: number): Observable<ResponseModel> {
+		return this.httpClient.get<ResponseModel>(`${environment.serverPath}/user/${userId}/roles`);
+	}
+
 	public saveRoles(userId: number, roles: RoleModel[]) {
 		return this.httpClient.post<ResponseModel>(`${environment.serverPath}/user/roles`, {
 			id: userId,

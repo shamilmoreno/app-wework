@@ -1,1 +1,6 @@
-<p>role-index works!</p>
+<app-role-list
+    [roleList]="roleList"
+    [columns]="columns"
+    [breadscrums]="breadscrums"
+    (action)="actionCapture($event)">
+</app-role-list>
