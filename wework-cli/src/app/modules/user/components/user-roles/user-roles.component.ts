@@ -1,19 +1,25 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+// MATERIALS
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 
+// MODELS
 import { UserModel } from '@core/models/user.model';
 import { RoleModel } from '@core/models/role.model';
 import { ResponseModel } from '@core/models/response.model';
+
+// SERVICES
 import { UserService } from '@core/services/user.service';
 
 @Component({
 	selector: 'app-user-roles',
 	standalone: true,
-	imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule],
+	imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
 	templateUrl: './user-roles.component.html',
 	styleUrl: './user-roles.component.scss',
 	providers: [UserService],
