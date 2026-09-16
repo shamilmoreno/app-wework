@@ -1,16 +1,39 @@
-<h2 mat-dialog-title>Roles del usuario: {{ user.firstName }} {{ user.lastName }}</h2>
+<div class="roles-dialog">
+	<h2 mat-dialog-title class="roles-dialog__title">
+		<mat-icon class="roles-dialog__title-icon">admin_panel_settings</mat-icon>
+		<span>
+			Roles de <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+		</span>
+	</h2>
 
-<mat-dialog-content>
-	<div *ngIf="isLoading">Cargando roles...</div>
+	<mat-dialog-content class="roles-dialog__content">
+		<div *ngIf="isLoading" class="roles-dialog__loading">
+			<mat-spinner diameter="36"></mat-spinner>
+			<p>Cargando roles disponibles...</p>
+		</div>
 
-	<form *ngIf="!isLoading" [formGroup]="rolesForm">
-		<mat-checkbox *ngFor="let role of roleList" [formControlName]="'role_' + role.id">
-			{{ role.name }}
-		</mat-checkbox>
-	</form>
-</mat-dialog-content>
+		<form *ngIf="!isLoading" [formGroup]="rolesForm" class="roles-grid">
+			<label *ngFor="let role of roleList" class="role-card"
+				[class.role-card--selected]="rolesForm.get('role_' + role.id)?.value">
+				<input type="checkbox" class="role-card__checkbox-native" [formControlName]="'role_' + role.id" />
+				<span class="role-card__icon">
+					<mat-icon>{{ rolesForm.get('role_' + role.id)?.value ? 'check_circle' : 'radio_button_unchecked'
+						}}</mat-icon>
+				</span>
+				<span class="role-card__name">{{ role.name }}</span>
+			</label>
+		</form>
 
-<mat-dialog-actions align="end">
-	<button mat-button (click)="closeDialog()">Cancelar</button>
-	<button mat-raised-button color="primary" [disabled]="isLoading" (click)="saveChanges()">Guardar cambios</button>
-</mat-dialog-actions>
+		<p *ngIf="!isLoading && roleList.length === 0" class="roles-dialog__empty">
+			No hay roles disponibles para asignar.
+		</p>
+	</mat-dialog-content>
+
+	<mat-dialog-actions align="end" class="roles-dialog__actions">
+		<button mat-button (click)="closeDialog()">Cancelar</button>
+		<button mat-raised-button color="primary" [disabled]="isLoading" (click)="saveChanges()">
+			<mat-icon>save</mat-icon>
+			Guardar cambios
+		</button>
+	</mat-dialog-actions>
+</div>
