@@ -13,7 +13,7 @@ import { UserService } from '@core/services/user.service';
 @Component({
 	selector: 'app-user-roles',
 	standalone: true,
-	imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatCheckboxModule, MatButtonModule],
+	imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule],
 	templateUrl: './user-roles.component.html',
 	styleUrl: './user-roles.component.scss',
 	providers: [UserService],
