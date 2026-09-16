@@ -6,6 +6,7 @@ export class UserRoleService {
     return await getManager().getRepository(UserRole).find({
       where: { user: { id: userId } },
       order: { id: 'DESC' },
+	  relations: [ 'role' ]
     });
   }
 
