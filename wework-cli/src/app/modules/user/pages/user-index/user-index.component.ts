@@ -30,8 +30,10 @@ import { UserRolesComponent } from '../../components/user-roles/user-roles.compo
 		UserListComponent,
 		UserManageComponent,
 		UserDetailComponent,
-		UserDeleteComponent
+		UserDeleteComponent,
+		UserRolesComponent
 	],
+	providers: [ RoleService ],
 	templateUrl: './user-index.component.html',
 	styleUrl: './user-index.component.scss'
 })
