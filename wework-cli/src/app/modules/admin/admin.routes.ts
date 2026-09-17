@@ -34,11 +34,7 @@ export const ADMIN_ROUTES: Routes = [
 			{
 				path: 'warehouse',
 				loadChildren: () => import('../warehouse/warehouse.routes').then((m) => m.WAREHOUSE_ROUTES),
-			},
-			{
-				path: 'user',
-				loadChildren: () => import('../user/user.routes').then((m) => m.USER_ROUTES),
-			},
+			}
 		],
 	},
 ];
