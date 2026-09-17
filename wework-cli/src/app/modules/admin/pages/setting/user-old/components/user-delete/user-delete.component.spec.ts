@@ -8,7 +8,7 @@ describe('UserDeleteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserDeleteComponent]
+      declarations: [ UserDeleteComponent ]
     })
     .compileComponents();
 
