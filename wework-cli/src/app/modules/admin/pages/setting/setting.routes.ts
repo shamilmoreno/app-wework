@@ -40,7 +40,7 @@ export const SETTING_ROUTES: Routes = [
 			},
 			{
 				path: "list",
-				loadComponent: () => import("./user/containers/user-index/user-index.component").then((m) => m.UserIndexComponent),
+				loadComponent: () => import("./user/pages/user-index/user-index.component").then((m) => m.UserIndexComponent),
 			},
 			// Si tienes más rutas dentro de user (como 'profile' o 'add'), agrégalas aquí siguiendo el mismo patrón
 		],
