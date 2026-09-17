@@ -33,7 +33,8 @@ import { UserListComponent } from '../../components/user-list/user-list.componen
 		UserDeleteComponent
 	],
 	templateUrl: './user-index.component.html',
-	styleUrls: ['./user-index.component.scss']
+	styleUrls: ['./user-index.component.scss'],
+	providers: [ RoleService ]
 })
 export class UserIndexComponent implements OnInit {
 	public userList: UserModel[] = [];
