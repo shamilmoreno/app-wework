@@ -628,34 +628,6 @@ export const ROUTES: SideMetadataModel[] = [
 			},
 		],
 	},
-	/* GESTIÓN DE USUARIOS */
-	{
-		path: "",
-		title: "Usuarios",
-		moduleName: "user",
-		iconType: "material-icons-two-tone",
-		icon: "group",
-		class: "menu-toggle",
-		groupTitle: false,
-		badge: "",
-		badgeClass: "",
-		role: ["Administrator"],
-		submenu: [
-			{
-				path: "/user",
-				title: "Listado de Usuarios",
-				moduleName: "user",
-				iconType: "",
-				icon: "",
-				class: "ml-menu",
-				groupTitle: false,
-				badge: "",
-				badgeClass: "",
-				role: ["Administrator"],
-				submenu: [],
-			},
-		],
-	},
 	/* GESTIÓN DE CONFIGURACIONES */
 	{
 		path: "",
