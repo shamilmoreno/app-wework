@@ -63,6 +63,8 @@ export class LoginFormComponent implements OnInit {
 		});
 	}
 
+	
+
 	public login(event: Event): void {
 		event.preventDefault();
 
