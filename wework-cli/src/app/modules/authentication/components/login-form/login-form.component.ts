@@ -62,9 +62,6 @@ export class LoginFormComponent implements OnInit {
 			password: ['', [Validators.required, Validators.minLength(6)]]
 		});
 	}
-			password: ['holamundo', [Validators.required, Validators.minLength(6)]],
-
-	
 
 	public login(event: Event): void {
 		event.preventDefault();
