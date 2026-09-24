@@ -19,97 +19,97 @@ import { LocalStorageService } from '@core/services/local-storage.service';
 import { LoginFormComponent } from '../../components/login-form/login-form.component';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, LucideAngularModule, LoginFormComponent],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+	selector: 'app-login',
+	standalone: true,
+	imports: [CommonModule, LucideAngularModule, LoginFormComponent],
+	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  public currentUser: Partial<UserModel> = {};
+	public currentUser: Partial<UserModel> = {};
 
-  constructor(
-    private authenticationService: AuthenticationService,
-    private localStorageService: LocalStorageService,
-    private router: Router,
-  ) {}
+	constructor(
+		private authenticationService: AuthenticationService,
+		private localStorageService: LocalStorageService,
+		private router: Router,
+	) { }
 
-  ngOnInit(): void {}
+	ngOnInit(): void { }
 
-  public authenticate(event: AuthenticationModel): void {
-    this.authenticationService.login(event).subscribe({
-      next: (rm: ResponseModel) => {
-        const userResponse = rm.response.user;
-        console.log('Usuario que se responde de el response', userResponse);
-        console.log('Usuario que se responde de el response', rm.response);
+	public authenticate(event: AuthenticationModel): void {
+		this.authenticationService.login(event).subscribe({
+			next: (rm: ResponseModel) => {
+				const userResponse = rm.response.user;
+				console.log('Usuario que se responde de el response', userResponse);
+				console.log('Usuario que se responde de el response', rm.response);
 
-        // Construimos el objeto de usuario mapeando los almacenes
-        const userData: UserModel = {
-          id: userResponse.id,
-          firstName: userResponse.firstName,
-          lastName: userResponse.lastName,
-          email: userResponse.email,
-          token: userResponse.token,
-          userRoles: userResponse.userRoles,
-          warehouses:
-            userResponse.userWarehouses?.map((w: any) => ({
-              id: w.warehouse?.id,
-              name: w.warehouse?.name,
-              address: w.warehouse?.address,
-            })) ?? [],
-          activeWarehouseId: userResponse.activeWarehouseId || null,
-        };
+				// Construimos el objeto de usuario mapeando los almacenes
+				const userData: UserModel = {
+					id: userResponse.id,
+					firstName: userResponse.firstName,
+					lastName: userResponse.lastName,
+					email: userResponse.email,
+					token: userResponse.token,
+					userRoles: userResponse.userRoles,
+					warehouses:
+						userResponse.userWarehouses?.map((w: any) => ({
+							id: w.warehouse?.id,
+							name: w.warehouse?.name,
+							address: w.warehouse?.address,
+						})) ?? [],
+					activeWarehouseId: userResponse.activeWarehouseId || null,
+				};
 
-        // Establecemos el almacén activo por defecto
-        if (userData.warehouses && userData.warehouses.length > 0) {
-          userData.activeWarehouseId = userData.warehouses[0]?.id;
-        }
+				// Establecemos el almacén activo por defecto
+				if (userData.warehouses && userData.warehouses.length > 0) {
+					userData.activeWarehouseId = userData.warehouses[0]?.id;
+				}
 
-        // Guardamos en LocalStorage
-        this.localStorageService.setValue('currentUser', JSON.stringify(userData));
+				// Guardamos en LocalStorage
+				this.localStorageService.setValue('currentUser', JSON.stringify(userData));
 
-        // Mensaje de éxito y redirección
-        Swal.fire({
-          //position: 'top-end',
-          title: rm.message,
-          icon: 'success',
-          timer: 1500,
-          showConfirmButton: false,
-        }).then(() => {
-          this.handleNavigation(userData);
-        });
-      },
-      error: (err) => {
-        const errorData: ResponseModel = err.error;
-        Swal.fire({
-          title: errorData?.message || 'Error de conexión',
-          icon: 'error',
-          text: errorData?.message || 'Error de conexión',
-        });
-      },
-    });
-  }
+				// Mensaje de éxito y redirección
+				Swal.fire({
+					//position: 'top-end',
+					title: rm.message,
+					icon: 'success',
+					timer: 1500,
+					showConfirmButton: false,
+				}).then(() => {
+					this.handleNavigation(userData);
+				});
+			},
+			error: (err) => {
+				const errorData: ResponseModel = err.error;
+				Swal.fire({
+					title: errorData?.message || 'Error de conexión',
+					icon: 'error',
+					text: errorData?.message || 'Error de conexión',
+				});
+			},
+		});
+	}
 
-  private handleNavigation(user: UserModel): void {
-    if (!user.token || !user.userRoles || user.userRoles.length === 0) {
-      this.router.navigate(['/admin/not-found']);
-      return;
-    }
+	private handleNavigation(user: UserModel): void {
+		if (!user.token || !user.userRoles || user.userRoles.length === 0) {
+			this.router.navigate(['/admin/not-found']);
+			return;
+		}
 
-    // Extraemos el nombre del rol (manejando ambas estructuras posibles)
-    const roleName = user.userRoles?.[0]?.name || '';
+		// Extraemos el nombre del rol (manejando ambas estructuras posibles)
+		const roleName = user.userRoles?.[0]?.name || '';
 
-    const routesMap: { [key: string]: string } = {
-      Administrator: '/welcome',
-      'Recipe Manager': '/welcome',
-      'Inventory Manager': '/welcome',
-      'Import Manager': '/welcome',
-    };
+		const routesMap: { [key: string]: string } = {
+			Administrator: '/welcome',
+			'Recipe Manager': '/welcome',
+			'Inventory Manager': '/welcome',
+			'Import Manager': '/welcome',
+		};
 
-    // Buscamos la ruta o mandamos al dashboard por defecto
-    const targetRoute = routesMap[roleName] || '/welcome';
+		// Buscamos la ruta o mandamos al dashboard por defecto
+		const targetRoute = routesMap[roleName] || '/welcome';
 
-    console.log('Navegando a:', targetRoute); // Esto te ayudará a ver si el rol coincide
-    this.router.navigate([targetRoute]);
-  }
+		console.log('Navegando a:', targetRoute); // Esto te ayudará a ver si el rol coincide
+		this.router.navigate([targetRoute]);
+	}
 }

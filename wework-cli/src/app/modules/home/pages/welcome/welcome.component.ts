@@ -9,19 +9,19 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-welcome',
-  standalone: true,
-  imports: [
-	CommonModule,
-	RouterModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDividerModule
+	selector: 'app-welcome',
+	standalone: true,
+	imports: [
+		CommonModule,
+		RouterModule,
+		MatCardModule,
+		MatIconModule,
+		MatButtonModule,
+		MatDividerModule
 
-  ],
-  templateUrl: './welcome.component.html',
-  styleUrl: './welcome.component.scss'
+	],
+	templateUrl: './welcome.component.html',
+	styleUrl: './welcome.component.scss'
 })
 export class WelcomeComponent {
 

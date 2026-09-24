@@ -4,17 +4,17 @@ import { RoleController } from './role.controller';
 import { checkPermission } from '../../core/middlewares/check-permission';
 
 export class RoleRoutes {
-  public router: Router = Router();
-  private rc = new RoleController();
+	public router: Router = Router();
+	private rc = new RoleController();
 
-  constructor() {
-    // Customer
-    this.router.get('/', checkJwt, this.rc.ctrlList);
-    this.router.post('/', checkJwt, this.rc.ctrlCreate);
-    this.router.put('/', checkJwt, this.rc.ctrlUpdate);
-    this.router.get('/:id([0-9]+)', checkJwt, this.rc.ctrlGetOne);
-    this.router.get('/:id([0-9]+)/detail', checkJwt, this.rc.ctrlGetOneForDetail);
-    this.router.delete('/:id([0-9]+)', checkJwt, this.rc.ctrlRemove);
-	this.router.put('/:id([0-9]+)/permissions', checkJwt, checkPermission('role:edit'), this.rc.ctrlSetPermissions);
-  }
+	constructor() {
+		// Customer
+		this.router.get('/', checkJwt, this.rc.ctrlList);
+		this.router.post('/', checkJwt, this.rc.ctrlCreate);
+		this.router.put('/', checkJwt, this.rc.ctrlUpdate);
+		this.router.get('/:id([0-9]+)', checkJwt, this.rc.ctrlGetOne);
+		this.router.get('/:id([0-9]+)/detail', checkJwt, this.rc.ctrlGetOneForDetail);
+		this.router.delete('/:id([0-9]+)', checkJwt, this.rc.ctrlRemove);
+		this.router.put('/:id([0-9]+)/permissions', checkJwt, checkPermission('role:edit'), this.rc.ctrlSetPermissions);
+	}
 }

@@ -15,67 +15,63 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-login-form',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss'],
+	selector: 'app-login-form',
+	standalone: true,
+	imports: [
+		CommonModule,
+		ReactiveFormsModule,
+		MatInputModule,
+		MatFormFieldModule,
+		MatButtonModule,
+		MatIconModule,
+	],
+	templateUrl: './login-form.component.html',
+	styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent implements OnInit {
-  @Output() public loginEvent = new EventEmitter<AuthenticationModel>();
+	@Output() public loginEvent = new EventEmitter<AuthenticationModel>();
 
-  public loginForm!: FormGroup;
-  public authentication: Partial<AuthenticationModel> = {}; // Partial por seguridad de tipos
-  public hide = true;
+	public loginForm!: FormGroup;
+	public authentication: Partial<AuthenticationModel> = {}; // Partial por seguridad de tipos
+	public hide = true;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private localStorageService: LocalStorageService,
-    private router: Router,
-  ) {}
+	constructor(
+		private formBuilder: FormBuilder,
+		private localStorageService: LocalStorageService,
+		private router: Router,
+	) { }
 
-  ngOnInit(): void {
-    // Redirección si ya hay sesión (Lógica de Guard básica)
-    const currentUser = this.localStorageService.getValue('currentUser');
-    if (currentUser) {
-      this.router.navigate(['/admin']);
-    }
+	ngOnInit(): void {
+		// Redirección si ya hay sesión (Lógica de Guard básica)
+		const currentUser = this.localStorageService.getValue('currentUser');
+		if (currentUser) {
+			this.router.navigate(['/admin']);
+		}
 
-    this.buildForm();
-  }
+		this.buildForm();
+	}
 
-  // Getter para facilitar el acceso a controles en el HTML
-  get f() {
-    return this.loginForm.controls;
-  }
+	// Getter para facilitar el acceso a controles en el HTML
+	get f() {
+		return this.loginForm.controls;
+	}
 
-  public buildForm(): void {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, MyValidators.validateEmail]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
-   /*  this.loginForm = this.formBuilder.group({
-      email: ['shamilmoreno@gmail.com', [Validators.required, MyValidators.validateEmail]],
-      password: ['holamundo', [Validators.required, Validators.minLength(6)]],
-    }); */
-  }
+	public buildForm(): void {
+		this.loginForm = this.formBuilder.group({
+			email: ['shamilmoreno@gmail.com', [Validators.required, MyValidators.validateEmail]],
+		});
+	}
+			password: ['holamundo', [Validators.required, Validators.minLength(6)]],
 
-  public login(event: Event): void {
-    event.preventDefault();
+	public login(event: Event): void {
+		event.preventDefault();
 
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
+		if (this.loginForm.invalid) {
+			this.loginForm.markAllAsTouched();
+			return;
+		}
 
-    // Emitimos directamente el valor del formulario
-    this.loginEvent.emit(this.loginForm.value);
-  }
+		// Emitimos directamente el valor del formulario
+		this.loginEvent.emit(this.loginForm.value);
+	}
 }

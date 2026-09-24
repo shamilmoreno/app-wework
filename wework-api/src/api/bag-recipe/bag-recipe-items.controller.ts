@@ -102,7 +102,7 @@ export class BagRecipeItemController {
 						uItem.freightAmount = (/,/.test(i.freightAmount)) ? i.freightAmount.replace(/,/g, '') : i.freightAmount;
 						uItem.freightAmountBs = (/,/.test(i.freightAmountBs)) ? i.freightAmountBs.replace(/,/g, '') : i.freightAmountBs;
 						uItem.totalFreightAmount = (/,/.test(i.totalFreightAmount)) ? i.totalFreightAmount.replace(/,/g, '') : i.totalFreightAmount;
-						uItem.totalFreightAmountBs =  (/,/.test(i.totalFreightAmountBs)) ? i.totalFreightAmountBs.replace(/,/g, '') : i.totalFreightAmountBs;
+						uItem.totalFreightAmountBs = (/,/.test(i.totalFreightAmountBs)) ? i.totalFreightAmountBs.replace(/,/g, '') : i.totalFreightAmountBs;
 
 						// Sanitize data
 						sanitize(uItem);

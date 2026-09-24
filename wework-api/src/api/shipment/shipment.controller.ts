@@ -12,10 +12,10 @@ import moment from 'moment';
 
 export class ShipmentController {
 	/**
- 	* Carga todos los embarques de la base de datos
- 	* @param req Solicitud
- 	* @param res Respuesta
- 	*/
+	  * Carga todos los embarques de la base de datos
+	  * @param req Solicitud
+	  * @param res Respuesta
+	  */
 	public async ctrlList(req: Request, res: Response): Promise<void> {
 		try {
 			const shipmentService = new ShipmentService();
@@ -123,11 +123,11 @@ export class ShipmentController {
 			const end = moment(pruebas2).format('YYYY-MM-DD');
 			console.log('Aca las fechas de busqueda', init, end);
 
-			
+
 			const Shipemnts: Shipment[] = await shipmentService.getByDateFilter(init, end);
 			HttpResponseService.response(res, 200, Shipemnts, '')
 
-		
+
 		} catch (error) {
 			HttpResponseService.response(res, 500, error, messages.general.error);
 		}
