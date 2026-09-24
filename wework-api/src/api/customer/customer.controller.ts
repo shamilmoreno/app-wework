@@ -118,7 +118,7 @@ export class CustomerController {
 				customer.documentNumber = req.body.documentNumber;
 				customer.email = req.body.email;
 				customer.phone = req.body.phone;
-				customer.address = req.body.address;customer.customerType = req.body.customerType;
+				customer.address = req.body.address; customer.customerType = req.body.customerType;
 
 				// Validate data Costumer
 				const custumer = await validate(customer);

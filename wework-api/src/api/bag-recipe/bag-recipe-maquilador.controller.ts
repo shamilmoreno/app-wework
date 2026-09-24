@@ -85,7 +85,7 @@ export class BagRecipeMaquiladorController {
 		try {
 			const bagRecipeService = new BagRecipeService();
 			const bagRecipeMaquiladorService = new BagRecipeMaquiladorService();
-			let bagRecipeId = Number (req.params.id);
+			let bagRecipeId = Number(req.params.id);
 
 			// Find recipe
 			const bagRecipe: BagRecipe = await bagRecipeService.getOneOnlyObject(bagRecipeId);

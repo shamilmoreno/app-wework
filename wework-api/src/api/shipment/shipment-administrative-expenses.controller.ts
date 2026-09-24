@@ -53,7 +53,7 @@ export class ShipmentAdministrativeExpensesController {
 						nExpense.paymentDate = element.paymentDate;
 						nExpense.paymentReference = element.paymentReference;
 						nExpense.amountDollars = (/,/.test(element.amountDollars)) ? element.amountDollars.replace(/,/g, '') : element.amountDollars;
-						nExpense.feeAmount = (/,/.test(element.feeAmount)) ? element.feeAmount.replace(/,/g, '') : element.feeAmount; 
+						nExpense.feeAmount = (/,/.test(element.feeAmount)) ? element.feeAmount.replace(/,/g, '') : element.feeAmount;
 						nExpense.amountBolivars = (/,/.test(element.amountBolivars)) ? element.amountBolivars.replace(/,/g, '') : element.amountBolivars;
 						nExpense.createdAt = getCurrentDate();
 						nExpense.shipment = shipment;

@@ -363,147 +363,147 @@ export class SummaryShipmentController {
 	public async ctrlSummaryQuarter(req: Request, res: Response) {
 		try {
 			const summaryShipmentController = new SummaryShipmentController();
-		/* 	let data: SummaryDataModel = {
-				numberOfShipments: 0,
-				numberShipmentsDispatch: 0,
-				numberShipmentsTransit: 0,
-				numberShipmentsArriving: 0,
-				numberShipmentsDelay: 0,
-				totalDaysDelay: 0,
-				totalQuantityContainer: 0,
-				totalCapacityContainer: 0,
-				totalMetricTon: 0,
-				totalAmountPayDelay: 0.00,
-				lineChartOptions: {
-					series: [
-						{
-							name: '', // Van ek Cliete 
-							data: [] // Van los Embarques del cliente por mes
-						}
-					],
-					chart: {
-						height: 270,
-						type: 'line',
-						foreColor: '#9aa0ac',
-						dropShadow: {
-							enabled: true,
-							color: '#000',
-							top: 18,
-							left: 7,
-							blur: 10,
-							opacity: 0.2,
+			/* 	let data: SummaryDataModel = {
+					numberOfShipments: 0,
+					numberShipmentsDispatch: 0,
+					numberShipmentsTransit: 0,
+					numberShipmentsArriving: 0,
+					numberShipmentsDelay: 0,
+					totalDaysDelay: 0,
+					totalQuantityContainer: 0,
+					totalCapacityContainer: 0,
+					totalMetricTon: 0,
+					totalAmountPayDelay: 0.00,
+					lineChartOptions: {
+						series: [
+							{
+								name: '', // Van ek Cliete 
+								data: [] // Van los Embarques del cliente por mes
+							}
+						],
+						chart: {
+							height: 270,
+							type: 'line',
+							foreColor: '#9aa0ac',
+							dropShadow: {
+								enabled: true,
+								color: '#000',
+								top: 18,
+								left: 7,
+								blur: 10,
+								opacity: 0.2,
+							},
+							toolbar: {
+								show: false,
+							},
 						},
-						toolbar: {
+						colors: ['#9F78FF', '#858585'],
+						stroke: {
+							curve: 'smooth',
+						},
+						grid: {
+							row: {
+								colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+								opacity: 0.5,
+							},
+						},
+						markers: {
+							size: 3,
+						},
+						xaxis: {
+							categories: [], // Van los Meses del embarque
+							title: {
+								text: 'Meses',
+							},
+						},
+						yaxis: {
+							min: 5,
+							max: 40,
+						},
+						legend: {
+							position: 'top',
+							horizontalAlign: 'right',
+							floating: true,
+							offsetY: -25,
+							offsetX: -5,
+						},
+						tooltip: {
+							theme: 'dark',
+							marker: {
+								show: true,
+							},
+							x: {
+								show: true,
+							},
+						},
+					},
+					pieChartOptions: {
+						series: [],
+						chart: {
+							type: 'donut',
+							width: 200,
+						},
+						legend: {
 							show: false,
 						},
-					},
-					colors: ['#9F78FF', '#858585'],
-					stroke: {
-						curve: 'smooth',
-					},
-					grid: {
-						row: {
-							colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
-							opacity: 0.5,
+						dataLabels: {
+							enabled: false,
 						},
-					},
-					markers: {
-						size: 3,
-					},
-					xaxis: {
-						categories: [], // Van los Meses del embarque
-						title: {
-							text: 'Meses',
-						},
-					},
-					yaxis: {
-						min: 5,
-						max: 40,
-					},
-					legend: {
-						position: 'top',
-						horizontalAlign: 'right',
-						floating: true,
-						offsetY: -25,
-						offsetX: -5,
-					},
-					tooltip: {
-						theme: 'dark',
-						marker: {
-							show: true,
-						},
-						x: {
-							show: true,
-						},
-					},
-				},
-				pieChartOptions: {
-					series: [],
-					chart: {
-						type: 'donut',
-						width: 200,
-					},
-					legend: {
-						show: false,
-					},
-					dataLabels: {
-						enabled: false,
-					},
-					labels: ['Despacho', 'En Transito', 'Llego', 'Demora'],
-					responsive: [
-						{
-							breakpoint: 400,
-							options: {},
-						},
-					],
-				},
-				areaChartOptions: {
-					series: [
-						{
-							name: 'Mathes',
-							data: [31, 40, 28, 51, 42, 85, 77],
-						},
-						{
-							name: 'Science',
-							data: [11, 32, 45, 32, 34, 52, 41],
-						},
-					],
-					chart: {
-						height: 350,
-						type: 'area',
-						toolbar: {
-							show: false,
-						},
-						foreColor: '#9aa0ac',
-					},
-					colors: ['#F77A9A', '#A054F7'],
-					dataLabels: {
-						enabled: false,
-					},
-					stroke: {
-						curve: 'smooth',
-					},
-					xaxis: {
-						categories: [
-							'test 1',
-							'test 2',
-							'test 3',
-							'test 4',
-							'test 5',
-							'test 6',
-							'test 7',
+						labels: ['Despacho', 'En Transito', 'Llego', 'Demora'],
+						responsive: [
+							{
+								breakpoint: 400,
+								options: {},
+							},
 						],
 					},
-					legend: {
-						show: true,
-						position: 'top',
-						horizontalAlign: 'center',
-						offsetX: 0,
-						offsetY: 0,
-					},
-				}
-			};
- */
+					areaChartOptions: {
+						series: [
+							{
+								name: 'Mathes',
+								data: [31, 40, 28, 51, 42, 85, 77],
+							},
+							{
+								name: 'Science',
+								data: [11, 32, 45, 32, 34, 52, 41],
+							},
+						],
+						chart: {
+							height: 350,
+							type: 'area',
+							toolbar: {
+								show: false,
+							},
+							foreColor: '#9aa0ac',
+						},
+						colors: ['#F77A9A', '#A054F7'],
+						dataLabels: {
+							enabled: false,
+						},
+						stroke: {
+							curve: 'smooth',
+						},
+						xaxis: {
+							categories: [
+								'test 1',
+								'test 2',
+								'test 3',
+								'test 4',
+								'test 5',
+								'test 6',
+								'test 7',
+							],
+						},
+						legend: {
+							show: true,
+							position: 'top',
+							horizontalAlign: 'center',
+							offsetX: 0,
+							offsetY: 0,
+						},
+					}
+				};
+	 */
 			moment.locale('es');
 
 			// Logic
@@ -528,146 +528,146 @@ export class SummaryShipmentController {
 	public async ctrlSummarySemester(req: Request, res: Response) {
 		try {
 			const summaryShipmentController = new SummaryShipmentController();
-		/* 	let data: SummaryDataModel = {
-				numberOfShipments: 0,
-				numberShipmentsDispatch: 0,
-				numberShipmentsTransit: 0,
-				numberShipmentsArriving: 0,
-				numberShipmentsDelay: 0,
-				totalDaysDelay: 0,
-				totalQuantityContainer: 0,
-				totalCapacityContainer: 0,
-				totalMetricTon: 0,
-				totalAmountPayDelay: 0.00,
-				lineChartOptions: {
-					series: [
-						{
-							name: '', // Van ek Cliete 
-							data: [] // Van los Embarques del cliente por mes
-						}
-					],
-					chart: {
-						height: 270,
-						type: 'line',
-						foreColor: '#9aa0ac',
-						dropShadow: {
-							enabled: true,
-							color: '#000',
-							top: 18,
-							left: 7,
-							blur: 10,
-							opacity: 0.2,
+			/* 	let data: SummaryDataModel = {
+					numberOfShipments: 0,
+					numberShipmentsDispatch: 0,
+					numberShipmentsTransit: 0,
+					numberShipmentsArriving: 0,
+					numberShipmentsDelay: 0,
+					totalDaysDelay: 0,
+					totalQuantityContainer: 0,
+					totalCapacityContainer: 0,
+					totalMetricTon: 0,
+					totalAmountPayDelay: 0.00,
+					lineChartOptions: {
+						series: [
+							{
+								name: '', // Van ek Cliete 
+								data: [] // Van los Embarques del cliente por mes
+							}
+						],
+						chart: {
+							height: 270,
+							type: 'line',
+							foreColor: '#9aa0ac',
+							dropShadow: {
+								enabled: true,
+								color: '#000',
+								top: 18,
+								left: 7,
+								blur: 10,
+								opacity: 0.2,
+							},
+							toolbar: {
+								show: false,
+							},
 						},
-						toolbar: {
+						colors: ['#9F78FF', '#858585'],
+						stroke: {
+							curve: 'smooth',
+						},
+						grid: {
+							row: {
+								colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+								opacity: 0.5,
+							},
+						},
+						markers: {
+							size: 3,
+						},
+						xaxis: {
+							categories: [], // Van los Meses del embarque
+							title: {
+								text: 'Meses',
+							},
+						},
+						yaxis: {
+							min: 5,
+							max: 40,
+						},
+						legend: {
+							position: 'top',
+							horizontalAlign: 'right',
+							floating: true,
+							offsetY: -25,
+							offsetX: -5,
+						},
+						tooltip: {
+							theme: 'dark',
+							marker: {
+								show: true,
+							},
+							x: {
+								show: true,
+							},
+						},
+					},
+					pieChartOptions: {
+						series: [],
+						chart: {
+							type: 'donut',
+							width: 200,
+						},
+						legend: {
 							show: false,
 						},
-					},
-					colors: ['#9F78FF', '#858585'],
-					stroke: {
-						curve: 'smooth',
-					},
-					grid: {
-						row: {
-							colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
-							opacity: 0.5,
+						dataLabels: {
+							enabled: false,
 						},
-					},
-					markers: {
-						size: 3,
-					},
-					xaxis: {
-						categories: [], // Van los Meses del embarque
-						title: {
-							text: 'Meses',
-						},
-					},
-					yaxis: {
-						min: 5,
-						max: 40,
-					},
-					legend: {
-						position: 'top',
-						horizontalAlign: 'right',
-						floating: true,
-						offsetY: -25,
-						offsetX: -5,
-					},
-					tooltip: {
-						theme: 'dark',
-						marker: {
-							show: true,
-						},
-						x: {
-							show: true,
-						},
-					},
-				},
-				pieChartOptions: {
-					series: [],
-					chart: {
-						type: 'donut',
-						width: 200,
-					},
-					legend: {
-						show: false,
-					},
-					dataLabels: {
-						enabled: false,
-					},
-					labels: ['Despacho', 'En Transito', 'Llego', 'Demora'],
-					responsive: [
-						{
-							breakpoint: 400,
-							options: {},
-						},
-					],
-				},
-				areaChartOptions: {
-					series: [
-						{
-							name: 'Mathes',
-							data: [31, 40, 28, 51, 42, 85, 77],
-						},
-						{
-							name: 'Science',
-							data: [11, 32, 45, 32, 34, 52, 41],
-						},
-					],
-					chart: {
-						height: 350,
-						type: 'area',
-						toolbar: {
-							show: false,
-						},
-						foreColor: '#9aa0ac',
-					},
-					colors: ['#F77A9A', '#A054F7'],
-					dataLabels: {
-						enabled: false,
-					},
-					stroke: {
-						curve: 'smooth',
-					},
-					xaxis: {
-						categories: [
-							'test 1',
-							'test 2',
-							'test 3',
-							'test 4',
-							'test 5',
-							'test 6',
-							'test 7',
+						labels: ['Despacho', 'En Transito', 'Llego', 'Demora'],
+						responsive: [
+							{
+								breakpoint: 400,
+								options: {},
+							},
 						],
 					},
-					legend: {
-						show: true,
-						position: 'top',
-						horizontalAlign: 'center',
-						offsetX: 0,
-						offsetY: 0,
-					},
-				}
-			}; */
+					areaChartOptions: {
+						series: [
+							{
+								name: 'Mathes',
+								data: [31, 40, 28, 51, 42, 85, 77],
+							},
+							{
+								name: 'Science',
+								data: [11, 32, 45, 32, 34, 52, 41],
+							},
+						],
+						chart: {
+							height: 350,
+							type: 'area',
+							toolbar: {
+								show: false,
+							},
+							foreColor: '#9aa0ac',
+						},
+						colors: ['#F77A9A', '#A054F7'],
+						dataLabels: {
+							enabled: false,
+						},
+						stroke: {
+							curve: 'smooth',
+						},
+						xaxis: {
+							categories: [
+								'test 1',
+								'test 2',
+								'test 3',
+								'test 4',
+								'test 5',
+								'test 6',
+								'test 7',
+							],
+						},
+						legend: {
+							show: true,
+							position: 'top',
+							horizontalAlign: 'center',
+							offsetX: 0,
+							offsetY: 0,
+						},
+					}
+				}; */
 
 			moment.locale('es');
 
@@ -694,147 +694,147 @@ export class SummaryShipmentController {
 	public async ctrlSummaryYear(req: Request, res: Response): Promise<void> {
 		try {
 			const summaryShipmentController = new SummaryShipmentController();
-		/* 	let data: SummaryDataModel = {
-				numberOfShipments: 0,
-				numberShipmentsDispatch: 0,
-				numberShipmentsTransit: 0,
-				numberShipmentsArriving: 0,
-				numberShipmentsDelay: 0,
-				totalDaysDelay: 0,
-				totalQuantityContainer: 0,
-				totalCapacityContainer: 0,
-				totalMetricTon: 0,
-				totalAmountPayDelay: 0.00,
-				lineChartOptions: {
-					series: [
-						{
-							name: '', // Van ek Cliete 
-							data: [] // Van los Embarques del cliente por mes
-						}
-					],
-					chart: {
-						height: 270,
-						type: 'line',
-						foreColor: '#9aa0ac',
-						dropShadow: {
-							enabled: true,
-							color: '#000',
-							top: 18,
-							left: 7,
-							blur: 10,
-							opacity: 0.2,
+			/* 	let data: SummaryDataModel = {
+					numberOfShipments: 0,
+					numberShipmentsDispatch: 0,
+					numberShipmentsTransit: 0,
+					numberShipmentsArriving: 0,
+					numberShipmentsDelay: 0,
+					totalDaysDelay: 0,
+					totalQuantityContainer: 0,
+					totalCapacityContainer: 0,
+					totalMetricTon: 0,
+					totalAmountPayDelay: 0.00,
+					lineChartOptions: {
+						series: [
+							{
+								name: '', // Van ek Cliete 
+								data: [] // Van los Embarques del cliente por mes
+							}
+						],
+						chart: {
+							height: 270,
+							type: 'line',
+							foreColor: '#9aa0ac',
+							dropShadow: {
+								enabled: true,
+								color: '#000',
+								top: 18,
+								left: 7,
+								blur: 10,
+								opacity: 0.2,
+							},
+							toolbar: {
+								show: false,
+							},
 						},
-						toolbar: {
+						colors: ['#9F78FF', '#858585'],
+						stroke: {
+							curve: 'smooth',
+						},
+						grid: {
+							row: {
+								colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+								opacity: 0.5,
+							},
+						},
+						markers: {
+							size: 3,
+						},
+						xaxis: {
+							categories: [], // Van los Meses del embarque
+							title: {
+								text: 'Meses',
+							},
+						},
+						yaxis: {
+							min: 5,
+							max: 40,
+						},
+						legend: {
+							position: 'top',
+							horizontalAlign: 'right',
+							floating: true,
+							offsetY: -25,
+							offsetX: -5,
+						},
+						tooltip: {
+							theme: 'dark',
+							marker: {
+								show: true,
+							},
+							x: {
+								show: true,
+							},
+						},
+					},
+					pieChartOptions: {
+						series: [],
+						chart: {
+							type: 'donut',
+							width: 200,
+						},
+						legend: {
 							show: false,
 						},
-					},
-					colors: ['#9F78FF', '#858585'],
-					stroke: {
-						curve: 'smooth',
-					},
-					grid: {
-						row: {
-							colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
-							opacity: 0.5,
+						dataLabels: {
+							enabled: false,
 						},
-					},
-					markers: {
-						size: 3,
-					},
-					xaxis: {
-						categories: [], // Van los Meses del embarque
-						title: {
-							text: 'Meses',
-						},
-					},
-					yaxis: {
-						min: 5,
-						max: 40,
-					},
-					legend: {
-						position: 'top',
-						horizontalAlign: 'right',
-						floating: true,
-						offsetY: -25,
-						offsetX: -5,
-					},
-					tooltip: {
-						theme: 'dark',
-						marker: {
-							show: true,
-						},
-						x: {
-							show: true,
-						},
-					},
-				},
-				pieChartOptions: {
-					series: [],
-					chart: {
-						type: 'donut',
-						width: 200,
-					},
-					legend: {
-						show: false,
-					},
-					dataLabels: {
-						enabled: false,
-					},
-					labels: ['Despacho', 'En Transito', 'Llego', 'Demora'],
-					responsive: [
-						{
-							breakpoint: 400,
-							options: {},
-						},
-					],
-				},
-				areaChartOptions: {
-					series: [
-						{
-							name: 'Mathes',
-							data: [31, 40, 28, 51, 42, 85, 77],
-						},
-						{
-							name: 'Science',
-							data: [11, 32, 45, 32, 34, 52, 41],
-						},
-					],
-					chart: {
-						height: 350,
-						type: 'area',
-						toolbar: {
-							show: false,
-						},
-						foreColor: '#9aa0ac',
-					},
-					colors: ['#F77A9A', '#A054F7'],
-					dataLabels: {
-						enabled: false,
-					},
-					stroke: {
-						curve: 'smooth',
-					},
-					xaxis: {
-						categories: [
-							'test 1',
-							'test 2',
-							'test 3',
-							'test 4',
-							'test 5',
-							'test 6',
-							'test 7',
+						labels: ['Despacho', 'En Transito', 'Llego', 'Demora'],
+						responsive: [
+							{
+								breakpoint: 400,
+								options: {},
+							},
 						],
 					},
-					legend: {
-						show: true,
-						position: 'top',
-						horizontalAlign: 'center',
-						offsetX: 0,
-						offsetY: 0,
-					},
-				}
-			};
- */
+					areaChartOptions: {
+						series: [
+							{
+								name: 'Mathes',
+								data: [31, 40, 28, 51, 42, 85, 77],
+							},
+							{
+								name: 'Science',
+								data: [11, 32, 45, 32, 34, 52, 41],
+							},
+						],
+						chart: {
+							height: 350,
+							type: 'area',
+							toolbar: {
+								show: false,
+							},
+							foreColor: '#9aa0ac',
+						},
+						colors: ['#F77A9A', '#A054F7'],
+						dataLabels: {
+							enabled: false,
+						},
+						stroke: {
+							curve: 'smooth',
+						},
+						xaxis: {
+							categories: [
+								'test 1',
+								'test 2',
+								'test 3',
+								'test 4',
+								'test 5',
+								'test 6',
+								'test 7',
+							],
+						},
+						legend: {
+							show: true,
+							position: 'top',
+							horizontalAlign: 'center',
+							offsetX: 0,
+							offsetY: 0,
+						},
+					}
+				};
+	 */
 			moment.locale('es');
 
 			// Logic
@@ -859,147 +859,147 @@ export class SummaryShipmentController {
 	public async getStructureData(init: string, end: string): Promise<SummaryDataModel> {
 		try {
 			const shipmentService = new ShipmentService();
-		/* 	const data: SummaryDataModel = {
-				numberOfShipments: 0,
-				numberShipmentsDispatch: 0,
-				numberShipmentsTransit: 0,
-				numberShipmentsArriving: 0,
-				numberShipmentsDelay: 0,
-				totalDaysDelay: 0,
-				totalQuantityContainer: 0,
-				totalCapacityContainer: 0,
-				totalMetricTon: 0,
-				totalAmountPayDelay: 0.00,
-				lineChartOptions: {
-					series: [
-						{
-							name: '', // Van ek Cliete 
-							data: [] // Van los Embarques del cliente por mes
-						}
-					],
-					chart: {
-						height: 270,
-						type: 'line',
-						foreColor: '#9aa0ac',
-						dropShadow: {
-							enabled: true,
-							color: '#000',
-							top: 18,
-							left: 7,
-							blur: 10,
-							opacity: 0.2,
+			/* 	const data: SummaryDataModel = {
+					numberOfShipments: 0,
+					numberShipmentsDispatch: 0,
+					numberShipmentsTransit: 0,
+					numberShipmentsArriving: 0,
+					numberShipmentsDelay: 0,
+					totalDaysDelay: 0,
+					totalQuantityContainer: 0,
+					totalCapacityContainer: 0,
+					totalMetricTon: 0,
+					totalAmountPayDelay: 0.00,
+					lineChartOptions: {
+						series: [
+							{
+								name: '', // Van ek Cliete 
+								data: [] // Van los Embarques del cliente por mes
+							}
+						],
+						chart: {
+							height: 270,
+							type: 'line',
+							foreColor: '#9aa0ac',
+							dropShadow: {
+								enabled: true,
+								color: '#000',
+								top: 18,
+								left: 7,
+								blur: 10,
+								opacity: 0.2,
+							},
+							toolbar: {
+								show: false,
+							},
 						},
-						toolbar: {
+						colors: ['#9F78FF', '#858585'],
+						stroke: {
+							curve: 'smooth',
+						},
+						grid: {
+							row: {
+								colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+								opacity: 0.5,
+							},
+						},
+						markers: {
+							size: 3,
+						},
+						xaxis: {
+							categories: [], // Van los Meses del embarque
+							title: {
+								text: 'Meses',
+							},
+						},
+						yaxis: {
+							min: 5,
+							max: 40,
+						},
+						legend: {
+							position: 'top',
+							horizontalAlign: 'right',
+							floating: true,
+							offsetY: -25,
+							offsetX: -5,
+						},
+						tooltip: {
+							theme: 'dark',
+							marker: {
+								show: true,
+							},
+							x: {
+								show: true,
+							},
+						},
+					},
+					pieChartOptions: {
+						series: [],
+						chart: {
+							type: 'donut',
+							width: 200,
+						},
+						legend: {
 							show: false,
 						},
-					},
-					colors: ['#9F78FF', '#858585'],
-					stroke: {
-						curve: 'smooth',
-					},
-					grid: {
-						row: {
-							colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
-							opacity: 0.5,
+						dataLabels: {
+							enabled: false,
 						},
-					},
-					markers: {
-						size: 3,
-					},
-					xaxis: {
-						categories: [], // Van los Meses del embarque
-						title: {
-							text: 'Meses',
-						},
-					},
-					yaxis: {
-						min: 5,
-						max: 40,
-					},
-					legend: {
-						position: 'top',
-						horizontalAlign: 'right',
-						floating: true,
-						offsetY: -25,
-						offsetX: -5,
-					},
-					tooltip: {
-						theme: 'dark',
-						marker: {
-							show: true,
-						},
-						x: {
-							show: true,
-						},
-					},
-				},
-				pieChartOptions: {
-					series: [],
-					chart: {
-						type: 'donut',
-						width: 200,
-					},
-					legend: {
-						show: false,
-					},
-					dataLabels: {
-						enabled: false,
-					},
-					labels: ['Despacho', 'En Transito', 'Llego', 'Demora'],
-					responsive: [
-						{
-							breakpoint: 400,
-							options: {},
-						},
-					],
-				},
-				areaChartOptions: {
-					series: [
-						{
-							name: 'Mathes',
-							data: [31, 40, 28, 51, 42, 85, 77],
-						},
-						{
-							name: 'Science',
-							data: [11, 32, 45, 32, 34, 52, 41],
-						},
-					],
-					chart: {
-						height: 350,
-						type: 'area',
-						toolbar: {
-							show: false,
-						},
-						foreColor: '#9aa0ac',
-					},
-					colors: ['#F77A9A', '#A054F7'],
-					dataLabels: {
-						enabled: false,
-					},
-					stroke: {
-						curve: 'smooth',
-					},
-					xaxis: {
-						categories: [
-							'test 1',
-							'test 2',
-							'test 3',
-							'test 4',
-							'test 5',
-							'test 6',
-							'test 7',
+						labels: ['Despacho', 'En Transito', 'Llego', 'Demora'],
+						responsive: [
+							{
+								breakpoint: 400,
+								options: {},
+							},
 						],
 					},
-					legend: {
-						show: true,
-						position: 'top',
-						horizontalAlign: 'center',
-						offsetX: 0,
-						offsetY: 0,
-					},
-				}
-			};
- */
+					areaChartOptions: {
+						series: [
+							{
+								name: 'Mathes',
+								data: [31, 40, 28, 51, 42, 85, 77],
+							},
+							{
+								name: 'Science',
+								data: [11, 32, 45, 32, 34, 52, 41],
+							},
+						],
+						chart: {
+							height: 350,
+							type: 'area',
+							toolbar: {
+								show: false,
+							},
+							foreColor: '#9aa0ac',
+						},
+						colors: ['#F77A9A', '#A054F7'],
+						dataLabels: {
+							enabled: false,
+						},
+						stroke: {
+							curve: 'smooth',
+						},
+						xaxis: {
+							categories: [
+								'test 1',
+								'test 2',
+								'test 3',
+								'test 4',
+								'test 5',
+								'test 6',
+								'test 7',
+							],
+						},
+						legend: {
+							show: true,
+							position: 'top',
+							horizontalAlign: 'center',
+							offsetX: 0,
+							offsetY: 0,
+						},
+					}
+				};
+	 */
 			moment.locale('es');
 			const todayDate = moment();
 
@@ -1084,19 +1084,19 @@ export class SummaryShipmentController {
 			});
 
 			// Result
-		/* 	data.numberOfShipments = resultShipments.length;
-			data.numberShipmentsDispatch = numberShipmentsDispatch;
-			data.numberShipmentsTransit = numberShipmentsTransit;
-			data.numberShipmentsArriving = numberShipmentsArriving;
-			data.numberShipmentsDelay = numberShipmentsDelay;
-			data.totalDaysDelay = totalDaysDelay;
-			data.totalAmountPayDelay = totalAmountPayDelay;
-			data.totalQuantityContainer = totalQuantityContainer;
-			data.totalCapacityContainer = totalCapacityContainer;
-			data.totalMetricTon = totalMetricTon;
-			data.pieChartOptions.series = [numberShipmentsDispatch, numberShipmentsTransit, numberShipmentsArriving, numberShipmentsDelay]
-
-			console.log('Esta es mi data ya estructurada', data.pieChartOptions) */
+			/* 	data.numberOfShipments = resultShipments.length;
+				data.numberShipmentsDispatch = numberShipmentsDispatch;
+				data.numberShipmentsTransit = numberShipmentsTransit;
+				data.numberShipmentsArriving = numberShipmentsArriving;
+				data.numberShipmentsDelay = numberShipmentsDelay;
+				data.totalDaysDelay = totalDaysDelay;
+				data.totalAmountPayDelay = totalAmountPayDelay;
+				data.totalQuantityContainer = totalQuantityContainer;
+				data.totalCapacityContainer = totalCapacityContainer;
+				data.totalMetricTon = totalMetricTon;
+				data.pieChartOptions.series = [numberShipmentsDispatch, numberShipmentsTransit, numberShipmentsArriving, numberShipmentsDelay]
+	
+				console.log('Esta es mi data ya estructurada', data.pieChartOptions) */
 
 			// Return data
 			/* return data; */

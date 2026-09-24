@@ -73,7 +73,7 @@ export class BagRecipeIndexComponent implements OnInit {
 		private bagRecipeStoreService: BagRecipeStoreService,
 		private productService: ProductService,
 		private companyService: CompanyService,
-	) {}
+	) { }
 
 	ngOnInit(): void {
 		this.fetchRecipeBagList();
@@ -341,7 +341,7 @@ export class BagRecipeIndexComponent implements OnInit {
 			this.fetchRecipeBagList();
 		}
 	}
-	
+
 	public saveChanges(values: any) {
 		const request = values.op == 'update' ? 'update' : 'create';
 		let bagRecipeIdNew;
@@ -358,7 +358,7 @@ export class BagRecipeIndexComponent implements OnInit {
 				if (bagRecipeIdNew && bagRecipeMaquiladors !== undefined && bagRecipeMaquiladors.length > 0) {
 					console.log('Estos son los Maquiladores a guardar', bagRecipeMaquiladors);
 					this.bagRecipeService.saveMaquiladors(bagRecipeIdNew, bagRecipeMaquiladors).subscribe({
-						next: (rm: ResponseModel) => {},
+						next: (rm: ResponseModel) => { },
 						error: (err) => {
 							const error: ResponseModel = err.error;
 							Swal.fire({
@@ -369,7 +369,7 @@ export class BagRecipeIndexComponent implements OnInit {
 					});
 				} else {
 					this.bagRecipeService.removeMaquiladors(bagRecipeIdNew).subscribe({
-						next: (rm: ResponseModel) => {},
+						next: (rm: ResponseModel) => { },
 						error: (err) => {
 							const error: ResponseModel = err.error;
 							Swal.fire({
@@ -383,7 +383,7 @@ export class BagRecipeIndexComponent implements OnInit {
 				// Save Products
 				if (bagRecipeIdNew && bagRecipeProducts !== undefined && bagRecipeProducts.length > 0) {
 					this.bagRecipeService.saveProducts(bagRecipeIdNew, bagRecipeProducts).subscribe({
-						next: (rm: ResponseModel) => {},
+						next: (rm: ResponseModel) => { },
 						error: (err) => {
 							const error: ResponseModel = err.error;
 							Swal.fire({
@@ -433,7 +433,7 @@ export class BagRecipeIndexComponent implements OnInit {
 			});
 		} else {
 			this.bagRecipeService.removePayments(bagRecipeIdNew).subscribe({
-				next: (rm: ResponseModel) => {},
+				next: (rm: ResponseModel) => { },
 				error: (err) => {
 					const error: ResponseModel = err.error;
 					Swal.fire({

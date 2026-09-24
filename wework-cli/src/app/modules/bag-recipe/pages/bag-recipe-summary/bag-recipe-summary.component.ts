@@ -189,7 +189,7 @@ export class BagRecipeSummaryComponent {
 		},
 	};
 
-	public filterChange() { 
+	public filterChange() {
 		const startDate = this.bagRecipeForm.get('resumeForm.periodStartDate')?.value;
 		const endDate = this.bagRecipeForm.get('resumeForm.periodEndDate')?.value;
 

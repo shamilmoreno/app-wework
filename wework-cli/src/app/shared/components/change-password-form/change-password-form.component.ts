@@ -20,82 +20,82 @@ import { LocalStorageService } from '../../../core/services/local-storage.servic
 
 
 @Component({
-    selector: 'app-change-password-form',
-    standalone: true,
-    imports: [
-        CommonModule,
-        LucideAngularModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule
-    ],
-    templateUrl: './change-password-form.component.html',
-    styleUrls: ['./change-password-form.component.scss'],
+	selector: 'app-change-password-form',
+	standalone: true,
+	imports: [
+		CommonModule,
+		LucideAngularModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatIconModule,
+		MatButtonModule
+	],
+	templateUrl: './change-password-form.component.html',
+	styleUrls: ['./change-password-form.component.scss'],
 })
 export class ChangePasswordFormComponent implements OnInit {
-    public changePasswordForm!: FormGroup;
-    public authenticationModel: AuthenticationModel = {};
-    public submitted: boolean = false;
-    public hide = true;
+	public changePasswordForm!: FormGroup;
+	public authenticationModel: AuthenticationModel = {};
+	public submitted: boolean = false;
+	public hide = true;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private authenticationService: AuthenticationService,
-        private lsService: LocalStorageService,
-        private router: Router) { }
+	constructor(
+		private formBuilder: FormBuilder,
+		private authenticationService: AuthenticationService,
+		private lsService: LocalStorageService,
+		private router: Router) { }
 
-    ngOnInit() {
-        this.buildForm();
-    }
+	ngOnInit() {
+		this.buildForm();
+	}
 
-    get f(): any {
-        return this.changePasswordForm.controls;
-    }
+	get f(): any {
+		return this.changePasswordForm.controls;
+	}
 
-    public buildForm(): void {
-        this.changePasswordForm = this.formBuilder.group({
-            newPassword: ['', [
-                Validators.required,
-                Validators.minLength(6)
-            ]],
-            confirmPassword: ['', Validators.required]
-        }, {
-            validator: MyValidators.mustMatch('newPassword', 'confirmPassword'),
-        });
-    }
+	public buildForm(): void {
+		this.changePasswordForm = this.formBuilder.group({
+			newPassword: ['', [
+				Validators.required,
+				Validators.minLength(6)
+			]],
+			confirmPassword: ['', Validators.required]
+		}, {
+			validator: MyValidators.mustMatch('newPassword', 'confirmPassword'),
+		});
+	}
 
-    public changePassword(event: Event) {
-        event.preventDefault();
-        this.submitted = true;
-        if (this.changePasswordForm.invalid) {
-            this.changePasswordForm.markAllAsTouched();
-            return;
-        }
+	public changePassword(event: Event) {
+		event.preventDefault();
+		this.submitted = true;
+		if (this.changePasswordForm.invalid) {
+			this.changePasswordForm.markAllAsTouched();
+			return;
+		}
 
-        // Set object
-        this.authenticationModel.password = this.changePasswordForm.get('newPassword')?.value;
+		// Set object
+		this.authenticationModel.password = this.changePasswordForm.get('newPassword')?.value;
 
-        // Send request
-        this.authenticationService.changePassword(this.authenticationModel).subscribe({
-            next: (rm: ResponseModel) => {
-                this.lsService.clearStorage();
-                Swal.fire({
-                    title: rm.message,
-                    icon: 'success'
-                })
-                setTimeout(() => {
-                    this.router.navigate(['/auth']);
-                }, 3000);
-            },
-            error: err => {
-                const error: ResponseModel = err.error;
-                Swal.fire({
-                    title: err.message,
-                    icon: 'error'
-                })
+		// Send request
+		this.authenticationService.changePassword(this.authenticationModel).subscribe({
+			next: (rm: ResponseModel) => {
+				this.lsService.clearStorage();
+				Swal.fire({
+					title: rm.message,
+					icon: 'success'
+				})
+				setTimeout(() => {
+					this.router.navigate(['/auth']);
+				}, 3000);
+			},
+			error: err => {
+				const error: ResponseModel = err.error;
+				Swal.fire({
+					title: err.message,
+					icon: 'error'
+				})
 
-            }
-        });
-    }
+			}
+		});
+	}
 }

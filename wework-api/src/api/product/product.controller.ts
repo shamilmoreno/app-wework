@@ -243,7 +243,7 @@ export class ProductController {
 				createdAt: p.createdAt,
 				updatedAt: p.updatedAt
 			}));
-			
+
 			return products;
 		} catch (error) {
 			console.log(error);
